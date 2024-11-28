@@ -10,7 +10,7 @@ export const defaultArticleData: IArticleData = {
   sourceURL: '',
   imageURL: '',
   timestamp: '',
-  platforms: ['a-platform'],
+  platforms: ['Platform1'],
   disableComment: false,
   importance: 0,
   author: '',

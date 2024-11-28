@@ -7,7 +7,7 @@ export interface IArticleData {
   sourceURL: string
   imageURL: string
   timestamp: string | number
-  platforms: string[]
+  platforms: string[] | string
   disableComment: boolean
   importance: number
   author: string

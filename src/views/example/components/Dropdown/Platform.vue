@@ -35,9 +35,8 @@ export default class extends Vue {
   @Prop({ required: true }) private value!: string[]
 
   private platformsOptions = [
-    { key: 'a-platform', name: 'a-platform' },
-    { key: 'b-platform', name: 'b-platform' },
-    { key: 'c-platform', name: 'c-platform' }
+    { key: 'Platform1', name: 'Platform1' },
+    { key: 'Platform2', name: 'Platform2' }
   ]
 
   get platforms() {

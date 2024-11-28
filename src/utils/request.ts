@@ -3,7 +3,8 @@ import { Message, MessageBox } from 'element-ui'
 import { UserModule } from '@/store/modules/user'
 
 const service = axios.create({
-  baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
+  // baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
+  baseURL: 'http://127.0.0.1:8080/api/v1',
   timeout: 5000
   // withCredentials: true // send cookies when cross-domain requests
 })
@@ -14,6 +15,7 @@ service.interceptors.request.use(
     // Add X-Access-Token header to every request, you can add other custom headers here
     if (UserModule.token) {
       config.headers['X-Access-Token'] = UserModule.token
+      config.headers.Authorization = `Bearer ${UserModule.token}`
     }
     return config
   },

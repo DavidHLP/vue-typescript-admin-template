@@ -123,12 +123,21 @@ import SocialSign from './components/SocialSignin.vue'
 })
 export default class extends Vue {
   private validateUsername = (rule: any, value: string, callback: Function) => {
-    if (!isValidUsername(value)) {
-      callback(new Error('Please enter the correct user name'))
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/ // 简单的邮箱格式正则表达式
+    if (!emailRegex.test(value)) {
+      callback(new Error('Please enter a valid email address'))
     } else {
       callback()
     }
   }
+
+  // private validateUsername = (rule: any, value: string, callback: Function) => {
+  //   if (!isValidUsername(value)) {
+  //     callback(new Error('Please enter the correct user name'))
+  //   } else {
+  //     callback()
+  //   }
+  // }
 
   private validatePassword = (rule: any, value: string, callback: Function) => {
     if (value.length < 6) {
@@ -139,8 +148,9 @@ export default class extends Vue {
   }
 
   private loginForm = {
-    username: 'admin',
-    password: '111111'
+    username: 'Spike@163.com',
+    // username: 'admin',
+    password: '#Alone117'
   }
 
   private loginRules = {

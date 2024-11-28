@@ -16,7 +16,7 @@ for (let i = 0; i < articleCount; i++) {
     sourceURL: faker.internet.url(),
     imageURL: faker.image.imageUrl(),
     timestamp: faker.date.past().getTime(),
-    platforms: [faker.random.arrayElement(['a-platform', 'b-platform', 'c-platform'])],
+    platforms: [faker.random.arrayElement(['Platform1', 'Platform2'])],
     disableComment: faker.datatype.boolean(),
     importance: faker.datatype.number({ min: 1, max: 3 }),
     author: faker.name.findName(),

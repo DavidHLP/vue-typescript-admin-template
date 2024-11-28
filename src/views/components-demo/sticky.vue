@@ -142,11 +142,10 @@ import Sticky from '@/components/Sticky/index.vue'
 export default class extends Vue {
   private time = Date
   private url = ''
-  private platforms = ['a-platform']
+  private platforms = ['Platform1']
   private platformsOptions = [
-    { key: 'a-platform', name: 'platformA' },
-    { key: 'b-platform', name: 'platformB' },
-    { key: 'c-platform', name: 'platformC' }
+    { key: 'Platform1', name: 'Platform1' },
+    { key: 'Platform2', name: 'Platform2' }
   ]
 
   private pickerOptions = {

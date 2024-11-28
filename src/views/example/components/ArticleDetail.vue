@@ -156,7 +156,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
 import { isValidURL } from '@/utils/validate'
-import { getArticle, defaultArticleData } from '@/api/articles'
+import { getArticle, defaultArticleData, updateArticle } from '@/api/articles'
 import { getUsers } from '@/api/users'
 import { AppModule } from '@/store/modules/app'
 import { TagsViewModule, ITagView } from '@/store/modules/tags-view'
@@ -167,6 +167,7 @@ import UploadImage from '@/components/UploadImage/index.vue'
 import Warning from './Warning.vue'
 import { CommentDropdown, PlatformDropdown, SourceUrlDropdown } from './Dropdown'
 import { Form } from 'element-ui'
+import { IArticleData } from '@/api/types'
 
 @Component({
   name: 'ArticleDetail',
@@ -257,7 +258,7 @@ export default class extends Vue {
       const id = this.$route.params && this.$route.params.id
       this.fetchData(parseInt(id))
     }
-    // Why need to make a copy of this.$route here?
+    // Why need to make a copy of thireparsepostForms.$route here?
     // Because if you enter this page and quickly switch tag, may be in the execution of this.setTagsViewTitle function, this.$route is no longer pointing to the current page
     // https://github.com/PanJiaChen/vue-element-admin/issues/1221
     this.tempTagView = Object.assign({}, this.$route)
@@ -275,9 +276,9 @@ export default class extends Vue {
     try {
       const { data } = await getArticle(id, { /* Your params here */ })
       this.postForm = data.article
-      // Just for test
-      this.postForm.title += `   Article Id:${this.postForm.id}`
-      this.postForm.abstractContent += `   Article Id:${this.postForm.id}`
+      this.postForm.platforms = JSON.parse(this.postForm.platforms as string)
+      // this.postForm.title += `   Article Id:${this.postForm.id}`
+      // this.postForm.abstractContent += `   Article Id:${this.postForm.id}`
       const title = this.lang === 'zh' ? '编辑文章' : 'Edit Article'
       // Set tagsview title
       this.setTagsViewTitle(title)
@@ -300,9 +301,10 @@ export default class extends Vue {
     document.title = `${title} - ${this.postForm.id}`
   }
 
-  private submitForm() {
-    (this.$refs.postForm as Form).validate(valid => {
+  private async submitForm() {
+    (this.$refs.postForm as Form).validate(async valid => {
       if (valid) {
+        await this.updataForm(this.postForm, 'published')
         this.loading = true
         this.$notify({
           title: 'Success',
@@ -322,7 +324,7 @@ export default class extends Vue {
     })
   }
 
-  private draftForm() {
+  private async draftForm() {
     if (this.postForm.fullContent.length === 0 || this.postForm.title.length === 0) {
       this.$message({
         message: 'Title and detail content are required',
@@ -330,6 +332,7 @@ export default class extends Vue {
       })
       return
     }
+    await this.updataForm(this.postForm, 'draft')
     this.$message({
       message: 'The draft saved successfully',
       type: 'success',
@@ -337,12 +340,28 @@ export default class extends Vue {
       duration: 1000
     })
     this.postForm.status = 'draft'
+    setTimeout(() => {
+      this.loading = false
+    }, 0.5 * 1000)
   }
 
   private async getRemoteUserList(name: string) {
     const { data } = await getUsers({ name })
     if (!data.items) return
     this.userListOptions = data.items.map((v: any) => v.name)
+  }
+
+  private async updataForm(from: IArticleData, status : string) {
+    from.status = status
+    from.platforms = JSON.stringify(from.platforms)
+    const { data } = await updateArticle(from.id, { article: from })
+    this.postForm = data.article
+    this.postForm.platforms = JSON.parse(this.postForm.platforms as string)
+    const title = this.lang === 'zh' ? '编辑文章' : 'Edit Article'
+    // Set tagsview title
+    this.setTagsViewTitle(title)
+    // Set page title
+    this.setPageTitle(title)
   }
 }
 </script>

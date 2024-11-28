@@ -457,6 +457,7 @@ export default class extends Vue {
   }
 
   private handleModifyStatus(row: any, status: string) {
+    console.log(status)
     this.$message({
       message: '操作成功',
       type: 'success'
