@@ -3,7 +3,7 @@
 // @ts-ignore
 import icon from 'vue-svgicon'
 icon.register({
-  'wechat': {
+  wechat: {
     width: 128,
     height: 110,
     viewBox: '0 0 128 110',

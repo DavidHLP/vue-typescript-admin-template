@@ -6,7 +6,7 @@
       <book-type-option v-model="bookType" />
       <el-button
         :loading="downloadLoading"
-        style="margin:0 0 20px 20px;"
+        style="margin: 0 0 20px 20px"
         type="primary"
         icon="el-icon-document"
         @click="handleDownload"
@@ -16,7 +16,7 @@
       <a
         href="https://armour.github.io/vue-typescript-admin-docs/features/components/excel.html"
         target="_blank"
-        style="margin-left:15px;"
+        style="margin-left: 15px"
       >
         <el-tag type="info">Documentation</el-tag>
       </a>
@@ -30,11 +30,7 @@
       fit
       highlight-current-row
     >
-      <el-table-column
-        width="95"
-        align="center"
-        label="Id"
-      >
+      <el-table-column width="95" align="center" label="Id">
         <template slot-scope="{$index}">
           {{ $index }}
         </template>
@@ -44,29 +40,17 @@
           {{ row.title }}
         </template>
       </el-table-column>
-      <el-table-column
-        label="Author"
-        width="180"
-        align="center"
-      >
+      <el-table-column label="Author" width="180" align="center">
         <template slot-scope="{row}">
           <el-tag>{{ row.author }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column
-        width="115"
-        align="center"
-        label="Readings"
-      >
+      <el-table-column width="115" align="center" label="Readings">
         <template slot-scope="{row}">
           {{ row.pageviews }}
         </template>
       </el-table-column>
-      <el-table-column
-        width="220"
-        align="center"
-        label="Date"
-      >
+      <el-table-column width="220" align="center" label="Date">
         <template slot-scope="{row}">
           <i class="el-icon-time" />
           <span>{{ row.timestamp | parseTime }}</span>
@@ -86,53 +70,63 @@ import FilenameOption from './components/FilenameOption.vue'
 import AutoWidthOption from './components/AutoWidthOption.vue'
 import BookTypeOption from './components/BookTypeOption.vue'
 
-@Component({
-  name: 'ExportExcel',
-  components: {
-    AutoWidthOption,
-    BookTypeOption,
-    FilenameOption
-  }
-})
+  @Component({
+    name: 'ExportExcel',
+    components: {
+      AutoWidthOption,
+      BookTypeOption,
+      FilenameOption
+    }
+  })
 export default class extends Vue {
-  private list: IArticleData[] = []
-  private listLoading = true
-  private downloadLoading = false
-  private filename = ''
-  private autoWidth = true
-  private bookType = 'xlsx'
+    private list: IArticleData[] = []
+    private listLoading = true
+    private downloadLoading = false
+    private filename = ''
+    private autoWidth = true
+    private bookType = 'xlsx'
 
-  created() {
-    this.fetchData()
-  }
+    created() {
+      this.fetchData()
+    }
 
-  private async fetchData() {
-    this.listLoading = true
-    const { data } = await getArticles({ /* Your params here */ })
-    this.list = data.items
-    // Just to simulate the time of the request
-    setTimeout(() => {
-      this.listLoading = false
-    }, 0.5 * 1000)
-  }
+    private async fetchData() {
+      this.listLoading = true
+      const { data } = await getArticles({
+        /* Your params here */
+      })
+      this.list = data.items
+      // Just to simulate the time of the request
+      setTimeout(() => {
+        this.listLoading = false
+      }, 0.5 * 1000)
+    }
 
-  private handleDownload() {
-    this.downloadLoading = true
-    const tHeader = ['Id', 'Title', 'Author', 'Readings', 'Date']
-    const filterVal = ['id', 'title', 'author', 'pageviews', 'timestamp']
-    const list = this.list
-    const data = formatJson(filterVal, list)
-    exportJson2Excel(tHeader, data, this.filename !== '' ? this.filename : undefined, undefined, undefined, this.autoWidth, this.bookType)
-    this.downloadLoading = false
-  }
+    private handleDownload() {
+      this.downloadLoading = true
+      const tHeader = ['Id', 'Title', 'Author', 'Readings', 'Date']
+      const filterVal = ['id', 'title', 'author', 'pageviews', 'timestamp']
+      const list = this.list
+      const data = formatJson(filterVal, list)
+      exportJson2Excel(
+        tHeader,
+        data,
+        this.filename !== '' ? this.filename : undefined,
+        undefined,
+        undefined,
+        this.autoWidth,
+        this.bookType
+      )
+      this.downloadLoading = false
+    }
 }
 </script>
 
 <style lang="scss">
-.radio-label {
-  font-size: 14px;
-  color: #606266;
-  line-height: 40px;
-  padding: 0 12px 0 30px;
-}
+  .radio-label {
+    font-size: 14px;
+    color: #606266;
+    line-height: 40px;
+    padding: 0 12px 0 30px;
+  }
 </style>

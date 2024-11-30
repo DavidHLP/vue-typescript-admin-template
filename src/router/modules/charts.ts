@@ -13,7 +13,10 @@ const chartsRouter: RouteConfig = {
   children: [
     {
       path: 'bar-chart',
-      component: () => import(/* webpackChunkName: "bar-chart" */ '@/views/charts/bar-chart.vue'),
+      component: () =>
+        import(
+          /* webpackChunkName: "bar-chart" */ '@/views/charts/bar-chart.vue'
+        ),
       name: 'BarChartDemo',
       meta: {
         title: 'barChart',
@@ -22,7 +25,10 @@ const chartsRouter: RouteConfig = {
     },
     {
       path: 'line-chart',
-      component: () => import(/* webpackChunkName: "line-chart" */ '@/views/charts/line-chart.vue'),
+      component: () =>
+        import(
+          /* webpackChunkName: "line-chart" */ '@/views/charts/line-chart.vue'
+        ),
       name: 'LineChartDemo',
       meta: {
         title: 'lineChart',
@@ -31,7 +37,10 @@ const chartsRouter: RouteConfig = {
     },
     {
       path: 'mixed-chart',
-      component: () => import(/* webpackChunkName: "mixed-chart" */ '@/views/charts/mixed-chart.vue'),
+      component: () =>
+        import(
+          /* webpackChunkName: "mixed-chart" */ '@/views/charts/mixed-chart.vue'
+        ),
       name: 'MixedChartDemo',
       meta: {
         title: 'mixedChart',

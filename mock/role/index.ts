@@ -20,18 +20,21 @@ const roles: IRoleData[] = [
   {
     key: 'visitor',
     name: 'visitor',
-    description: 'Just a visitor. Can only see the home page and the document page',
-    routes: [{
-      path: '',
-      redirect: 'dashboard',
-      children: [
-        {
-          path: 'dashboard',
-          name: 'Dashboard',
-          meta: { title: 'dashboard', icon: 'dashboard' }
-        }
-      ]
-    }]
+    description:
+      'Just a visitor. Can only see the home page and the document page',
+    routes: [
+      {
+        path: '',
+        redirect: 'dashboard',
+        children: [
+          {
+            path: 'dashboard',
+            name: 'Dashboard',
+            meta: { title: 'dashboard', icon: 'dashboard' }
+          }
+        ]
+      }
+    ]
   }
 ]
 

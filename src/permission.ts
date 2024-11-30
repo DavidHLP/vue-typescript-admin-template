@@ -25,6 +25,12 @@ router.beforeEach(async(to: Route, _: Route, next: any) => {
   // Start progress bar
   NProgress.start()
 
+  if (to.path === '/register') {
+    next() // 正常放行
+    NProgress.done() // 确保进度条结束
+    return
+  }
+
   // Determine whether the user has logged in
   if (UserModule.token) {
     if (to.path === '/login') {

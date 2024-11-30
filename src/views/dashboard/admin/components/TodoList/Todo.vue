@@ -1,23 +1,14 @@
 <template>
-  <li
-    :class="{completed: todo.done, editing: editing}"
-    class="todo"
-  >
+  <li :class="{completed: todo.done, editing: editing}" class="todo">
     <div class="view">
       <input
         :checked="todo.done"
         class="toggle"
         type="checkbox"
-        @change="toggleTodo( todo)"
-      >
-      <label
-        @dblclick="editing = true"
-        v-text="todo.text"
+        @change="toggleTodo(todo)"
       />
-      <button
-        class="destroy"
-        @click="deleteTodo( todo )"
-      />
+      <label @dblclick="editing = true" v-text="todo.text" />
+      <button class="destroy" @click="deleteTodo(todo)" />
     </div>
     <input
       v-show="editing"
@@ -27,7 +18,7 @@
       @keyup.enter="doneEdit"
       @keyup.esc="cancelEdit"
       @blur="doneEdit"
-    >
+    />
   </li>
 </template>
 
@@ -35,58 +26,58 @@
 import { Component, Prop, Vue } from 'vue-property-decorator'
 
 export interface ITodo {
-  text: string
-  done: boolean
-}
+    text: string
+    done: boolean
+  }
 
-@Component({
-  name: 'TodoDemo',
-  directives: {
-    focus: (el, { value }, { context }) => {
-      if (value) {
-        if (context) {
-          context.$nextTick(() => {
-            el.focus()
-          })
+  @Component({
+    name: 'TodoDemo',
+    directives: {
+      focus: (el, { value }, { context }) => {
+        if (value) {
+          if (context) {
+            context.$nextTick(() => {
+              el.focus()
+            })
+          }
         }
       }
     }
-  }
-})
+  })
 export default class extends Vue {
-  @Prop({ default: { text: '', done: false } }) private todo!: ITodo
+    @Prop({ default: { text: '', done: false } }) private todo!: ITodo
 
-  private editing = false
+    private editing = false
 
-  private deleteTodo(todo: ITodo) {
-    this.$emit('delete-todo', todo)
-  }
+    private deleteTodo(todo: ITodo) {
+      this.$emit('delete-todo', todo)
+    }
 
-  private editTodo({ todo, value }: { todo: ITodo, value: string }) {
-    this.$emit('edit-todo', { todo, value })
-  }
+    private editTodo({ todo, value }: { todo: ITodo, value: string }) {
+      this.$emit('edit-todo', { todo, value })
+    }
 
-  private toggleTodo(todo: ITodo) {
-    this.$emit('toggle-todo', todo)
-  }
+    private toggleTodo(todo: ITodo) {
+      this.$emit('toggle-todo', todo)
+    }
 
-  private doneEdit(e: KeyboardEvent) {
-    const value = (e.target as HTMLInputElement).value.trim()
-    const { todo } = this
-    if (!value) {
-      this.deleteTodo(todo)
-    } else if (this.editing) {
-      this.editTodo({
-        todo,
-        value
-      })
+    private doneEdit(e: KeyboardEvent) {
+      const value = (e.target as HTMLInputElement).value.trim()
+      const { todo } = this
+      if (!value) {
+        this.deleteTodo(todo)
+      } else if (this.editing) {
+        this.editTodo({
+          todo,
+          value
+        })
+        this.editing = false
+      }
+    }
+
+    private cancelEdit(e: KeyboardEvent) {
+      (e.target as HTMLInputElement).value = this.todo.text
       this.editing = false
     }
-  }
-
-  private cancelEdit(e: KeyboardEvent) {
-    (e.target as HTMLInputElement).value = this.todo.text
-    this.editing = false
-  }
 }
 </script>

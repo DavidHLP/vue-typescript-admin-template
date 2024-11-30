@@ -1,9 +1,9 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 
-@Component({
-  name: 'AuthRedirect'
-})
+  @Component({
+    name: 'AuthRedirect'
+  })
 export default class extends Vue {
   created() {
     const hash = window.location.search.slice(1)

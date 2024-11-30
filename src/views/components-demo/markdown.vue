@@ -2,21 +2,19 @@
   <div class="components-container">
     <aside>
       Markdown is based on
-      <a
-        href="https://github.com/nhnent/tui.editor"
-        target="_blank"
-      >tui.editor</a>, simply wrapped with Vue.
+      <a href="https://github.com/nhnent/tui.editor" target="_blank"
+        >tui.editor</a
+      >, simply wrapped with Vue.
       <a
         target="_blank"
         href="https://armour.github.io/vue-typescript-admin-docs/features/components/markdown-editor.html"
       >
-        Documentation </a>
+        Documentation
+      </a>
     </aside>
 
     <div class="editor-container">
-      <el-tag class="tag-title">
-        Basic:
-      </el-tag>
+      <el-tag class="tag-title"> Basic: </el-tag>
       <markdown-editor
         ref="markdownEditor"
         :initialValue="content1"
@@ -24,20 +22,14 @@
       />
     </div>
 
-    <el-button
-      type="primary"
-      icon="el-icon-document"
-      @click="getHtml"
-    >
+    <el-button type="primary" icon="el-icon-document" @click="getHtml">
       Get HTML
     </el-button>
     <!-- eslint-disable vue/no-v-html -->
-    <div v-html="html"/>
+    <div v-html="html" />
 
-    <div class="editor-container" style="margin-top:20px;">
-      <el-tag class="tag-title">
-        Markdown Mode:
-      </el-tag>
+    <div class="editor-container" style="margin-top: 20px">
+      <el-tag class="tag-title"> Markdown Mode: </el-tag>
       <markdown-editor
         :initialValue="content2"
         :options="{hideModeSwitch: true, previewStyle: 'tab'}"
@@ -46,19 +38,15 @@
     </div>
 
     <div class="editor-container">
-      <el-tag class="tag-title">
-        Customize Toolbar:
-      </el-tag>
+      <el-tag class="tag-title"> Customize Toolbar: </el-tag>
       <markdown-editor
         :initialValue="content3"
-        :options="{toolbarItems: ['heading','bold','italic']}"
+        :options="{toolbarItems: ['heading', 'bold', 'italic']}"
       />
     </div>
 
     <div class="editor-container">
-      <el-tag class="tag-title">
-        I18n:
-      </el-tag>
+      <el-tag class="tag-title"> I18n: </el-tag>
       <el-alert
         :closable="false"
         title="You can change the language of the admin system to see the effect"
@@ -126,40 +114,40 @@ const editor = new Editor(options);
 >    3. [ ] Ember
 `
 
-@Component({
-  name: 'MarkdownDemo',
-  components: {
-    MarkdownEditor
-  }
-})
+  @Component({
+    name: 'MarkdownDemo',
+    components: {
+      MarkdownEditor
+    }
+  })
 export default class extends Vue {
-  private content1 = fullcontent
-  private content2 = simpleContent
-  private content3 = simpleContent
-  private content4 = simpleContent
-  private html = ''
+    private content1 = fullcontent
+    private content2 = simpleContent
+    private content3 = simpleContent
+    private content4 = simpleContent
+    private html = ''
 
-  mounted() {
-    // FIXES auto focus issue caused by MarkdownEditor
-    window.scrollTo(0, 0)
-  }
+    mounted() {
+      // FIXES auto focus issue caused by MarkdownEditor
+      window.scrollTo(0, 0)
+    }
 
-  get language() {
-    return AppModule.language
-  }
+    get language() {
+      return AppModule.language
+    }
 
-  private getHtml() {
-    this.html = (this.$refs.markdownEditor as MarkdownEditor).getHtml()
-  }
+    private getHtml() {
+      this.html = (this.$refs.markdownEditor as MarkdownEditor).getHtml()
+    }
 }
 </script>
 
 <style lang="scss" scoped>
-.editor-container {
-  margin-bottom: 30px;
-}
+  .editor-container {
+    margin-bottom: 30px;
+  }
 
-.tag-title {
-  margin-bottom: 5px;
-}
+  .tag-title {
+    margin-bottom: 5px;
+  }
 </style>

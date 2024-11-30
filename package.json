@@ -6,11 +6,12 @@
   "scripts": {
     "serve": "concurrently \"npm:mock\" \"vue-cli-service serve\"",
     "test:unit": "jest --clearCache && vue-cli-service test:unit",
-    "lint": "vue-cli-service lint",
     "build:prod": "vue-cli-service build",
     "build:stage": "vue-cli-service build --mode staging",
     "svg": "vsvg -s ./src/icons/svg -t ./src/icons/components --ext ts --es6",
-    "mock": "cd mock && ts-node-dev mock-server.ts"
+    "mock": "cd mock && ts-node-dev mock-server.ts",
+    "lint": "vue-cli-service lint",
+    "format": "prettier --write ."
   },
   "dependencies": {
     "@tinymce/tinymce-vue": "^3.2.6",
@@ -92,12 +93,15 @@
     "babel-loader": "^8.2.2",
     "concurrently": "^6.0.0",
     "eslint": "^7.23.0",
+    "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-promise": "^4.3.1",
     "eslint-plugin-vue": "^7.8.0",
     "fibers": "^5.0.0",
     "lint-staged": "^10.5.4",
+    "prettier": "^3.4.1",
     "sass": "^1.32.8",
     "sass-loader": "^10.1.1",
     "style-resources-loader": "^1.4.1",

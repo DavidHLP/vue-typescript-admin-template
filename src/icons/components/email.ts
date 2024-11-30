@@ -3,7 +3,7 @@
 // @ts-ignore
 import icon from 'vue-svgicon'
 icon.register({
-  'email': {
+  email: {
     width: 128,
     height: 96,
     viewBox: '0 0 128 96',

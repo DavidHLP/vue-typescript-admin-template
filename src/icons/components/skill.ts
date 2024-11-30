@@ -3,7 +3,7 @@
 // @ts-ignore
 import icon from 'vue-svgicon'
 icon.register({
-  'skill': {
+  skill: {
     width: 128,
     height: 128,
     viewBox: '0 0 128 128',

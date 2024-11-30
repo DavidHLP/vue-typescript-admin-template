@@ -7,7 +7,7 @@ export const elDraggableDialog: DirectiveOptions = {
     dragDom.style.cssText += ';top:0px;'
     dialogHeaderEl.style.cssText += ';cursor:move;'
 
-    dialogHeaderEl.onmousedown = (e) => {
+    dialogHeaderEl.onmousedown = e => {
       const disX = e.clientX - dialogHeaderEl.offsetLeft
       const disY = e.clientY - dialogHeaderEl.offsetTop
 
@@ -31,24 +31,26 @@ export const elDraggableDialog: DirectiveOptions = {
 
       // Format may be "##%" or "##px"
       if (styleLeftStr.includes('%')) {
-        styleLeft = +document.body.clientWidth * (+styleLeftStr.replace(/%/g, '') / 100)
-        styleTop = +document.body.clientHeight * (+styleTopStr.replace(/%/g, '') / 100)
+        styleLeft =
+          +document.body.clientWidth * (+styleLeftStr.replace(/%/g, '') / 100)
+        styleTop =
+          +document.body.clientHeight * (+styleTopStr.replace(/%/g, '') / 100)
       } else {
         styleLeft = +styleLeftStr.replace(/px/g, '')
         styleTop = +styleTopStr.replace(/px/g, '')
       }
 
-      document.onmousemove = (e) => {
+      document.onmousemove = e => {
         let left = e.clientX - disX
         let top = e.clientY - disY
 
         // Handle edge cases
-        if (-(left) > minDragDomLeft) {
+        if (-left > minDragDomLeft) {
           left = -minDragDomLeft
         } else if (left > maxDragDomLeft) {
           left = maxDragDomLeft
         }
-        if (-(top) > minDragDomTop) {
+        if (-top > minDragDomTop) {
           top = -minDragDomTop
         } else if (top > maxDragDomTop) {
           top = maxDragDomTop

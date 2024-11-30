@@ -18,74 +18,77 @@ import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 /* eslint-disable import/no-webpack-loader-syntax */
 require('script-loader!jsonlint')
 
-@Component({
-  name: 'JsonEditor'
-})
+  @Component({
+    name: 'JsonEditor'
+  })
 export default class extends Vue {
-  @Prop({ required: true }) private value!: string
+    @Prop({ required: true }) private value!: string
 
-  private jsonEditor?: Editor
+    private jsonEditor?: Editor
 
-  @Watch('value')
-  private onValueChange(value: string) {
-    if (this.jsonEditor) {
-      const editorValue = this.jsonEditor.getValue()
-      if (value !== editorValue) {
-        this.jsonEditor.setValue(JSON.stringify(this.value, null, 2))
+    @Watch('value')
+    private onValueChange(value: string) {
+      if (this.jsonEditor) {
+        const editorValue = this.jsonEditor.getValue()
+        if (value !== editorValue) {
+          this.jsonEditor.setValue(JSON.stringify(this.value, null, 2))
+        }
       }
     }
-  }
 
-  mounted() {
-    this.jsonEditor = CodeMirror.fromTextArea(this.$refs.textarea as HTMLTextAreaElement, {
-      lineNumbers: true,
-      mode: 'application/json',
-      gutters: ['CodeMirror-lint-markers'],
-      theme: 'rubyblue',
-      lint: true
-    })
+    mounted() {
+      this.jsonEditor = CodeMirror.fromTextArea(
+        this.$refs.textarea as HTMLTextAreaElement,
+        {
+          lineNumbers: true,
+          mode: 'application/json',
+          gutters: ['CodeMirror-lint-markers'],
+          theme: 'rubyblue',
+          lint: true
+        }
+      )
 
-    this.jsonEditor.setValue(JSON.stringify(this.value, null, 2))
-    this.jsonEditor.on('change', editor => {
-      this.$emit('changed', editor.getValue())
-      this.$emit('input', editor.getValue())
-    })
-  }
-
-  public setValue(value: string) {
-    if (this.jsonEditor) {
-      this.jsonEditor.setValue(value)
+      this.jsonEditor.setValue(JSON.stringify(this.value, null, 2))
+      this.jsonEditor.on('change', editor => {
+        this.$emit('changed', editor.getValue())
+        this.$emit('input', editor.getValue())
+      })
     }
-  }
 
-  public getValue() {
-    if (this.jsonEditor) {
-      return this.jsonEditor.getValue()
+    public setValue(value: string) {
+      if (this.jsonEditor) {
+        this.jsonEditor.setValue(value)
+      }
     }
-    return ''
-  }
+
+    public getValue() {
+      if (this.jsonEditor) {
+        return this.jsonEditor.getValue()
+      }
+      return ''
+    }
 }
 </script>
 
 <style lang="scss">
-.CodeMirror {
-  height: auto;
-  min-height: 300px;
-  font-family: inherit;
-}
+  .CodeMirror {
+    height: auto;
+    min-height: 300px;
+    font-family: inherit;
+  }
 
-.CodeMirror-scroll {
-  min-height: 300px;
-}
+  .CodeMirror-scroll {
+    min-height: 300px;
+  }
 
-.cm span.cm-string {
-  color: #F08047;
-}
+  .cm span.cm-string {
+    color: #f08047;
+  }
 </style>
 
 <style lang="scss" scoped>
-.json-editor {
-  height: 100%;
-  position: relative;
-}
+  .json-editor {
+    height: 100%;
+    position: relative;
+  }
 </style>

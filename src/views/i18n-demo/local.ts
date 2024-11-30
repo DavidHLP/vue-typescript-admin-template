@@ -102,7 +102,7 @@ export default {
   it: {
     i18nView: {
       title: 'Cambia Lingua',
-      note: 'L\'internalizzazione di questo progetto è basata su vue-i18n',
+      note: "L'internalizzazione di questo progetto è basata su vue-i18n",
       datePlaceholder: 'Scegli un giorno',
       selectPlaceholder: 'Seleziona',
       tableDate: 'Data',

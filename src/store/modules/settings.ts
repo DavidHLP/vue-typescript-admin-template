@@ -1,4 +1,10 @@
-import { VuexModule, Module, Mutation, Action, getModule } from 'vuex-module-decorators'
+import {
+  VuexModule,
+  Module,
+  Mutation,
+  Action,
+  getModule
+} from 'vuex-module-decorators'
 import store from '@/store'
 import elementVariables from '@/styles/element-variables.scss'
 import defaultSettings from '@/settings'
@@ -30,7 +36,7 @@ class Settings extends VuexModule implements ISettingsState {
   }
 
   @Action
-  public ChangeSetting(payload: { key: string, value: any}) {
+  public ChangeSetting(payload: { key: string, value: any }) {
     this.CHANGE_SETTING(payload)
   }
 }

@@ -25,6 +25,6 @@ export const handleClipboard = (text: string, event: MouseEvent) => {
   clipboard.on('error', () => {
     clipboardError()
     clipboard.destroy()
-  });
-  (clipboard as any).onClick(event)
+  })
+  ;(clipboard as any).onClick(event)
 }

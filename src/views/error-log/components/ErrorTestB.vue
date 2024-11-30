@@ -9,8 +9,8 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 
-@Component({
-  name: 'ErrorTestB'
-})
+  @Component({
+    name: 'ErrorTestB'
+  })
 export default class extends Vue {}
 </script>

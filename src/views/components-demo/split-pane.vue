@@ -2,23 +2,14 @@
   <div class="components-container">
     <aside>
       <strong>SplitPane</strong> If you've used
-      <a
-        href="https://codepen.io/"
-        target="_blank"
-      > codepen</a>,
-      <a
-        href="https://jsfiddle.net/"
-        target="_blank"
-      > jsfiddle </a>will not be unfamiliar.
-      <a
-        href="https://github.com/PanJiaChen/vue-split-pane"
-        target="_blank"
-      > Github repository</a>
+      <a href="https://codepen.io/" target="_blank"> codepen</a>,
+      <a href="https://jsfiddle.net/" target="_blank"> jsfiddle </a>will not be
+      unfamiliar.
+      <a href="https://github.com/PanJiaChen/vue-split-pane" target="_blank">
+        Github repository</a
+      >
     </aside>
-    <split-pane
-      split="vertical"
-      @resize="resize"
-    >
+    <split-pane split="vertical" @resize="resize">
       <template slot="paneL">
         <div class="left-container" />
       </template>
@@ -40,12 +31,12 @@
 import SplitPane from 'vue-splitpane'
 import { Component, Vue } from 'vue-property-decorator'
 
-@Component({
-  name: 'SplitPaneDemo',
-  components: {
-    SplitPane
-  }
-})
+  @Component({
+    name: 'SplitPaneDemo',
+    components: {
+      SplitPane
+    }
+  })
 export default class extends Vue {
   resize() {
     // Handle resize
@@ -54,29 +45,29 @@ export default class extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.components-container {
-  height: 100vh;
-}
+  .components-container {
+    height: 100vh;
+  }
 
-.left-container {
-  background-color: #F38181;
-  height: 100%;
-}
+  .left-container {
+    background-color: #f38181;
+    height: 100%;
+  }
 
-.right-container {
-  background-color: #FCE38A;
-  height: 200px;
-}
+  .right-container {
+    background-color: #fce38a;
+    height: 200px;
+  }
 
-.top-container {
-  background-color: #FCE38A;
-  width: 100%;
-  height: 100%;
-}
+  .top-container {
+    background-color: #fce38a;
+    width: 100%;
+    height: 100%;
+  }
 
-.bottom-container {
-  width: 100%;
-  background-color: #95E1D3;
-  height: 100%;
-}
+  .bottom-container {
+    width: 100%;
+    background-color: #95e1d3;
+    height: 100%;
+  }
 </style>

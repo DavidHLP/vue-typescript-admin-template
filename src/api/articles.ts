@@ -16,7 +16,8 @@ export const defaultArticleData: IArticleData = {
   author: '',
   reviewer: '',
   type: '',
-  pageviews: 0
+  pageviews: 0,
+  iscreate: true
 }
 
 export const getArticles = (params: any) =>

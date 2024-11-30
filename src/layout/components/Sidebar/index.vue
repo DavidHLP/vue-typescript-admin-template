@@ -1,9 +1,6 @@
 <template>
   <div :class="{'has-logo': showLogo}">
-    <sidebar-logo
-      v-if="showLogo"
-      :collapse="isCollapse"
-    />
+    <sidebar-logo v-if="showLogo" :collapse="isCollapse" />
     <el-scrollbar wrap-class="scrollbar-wrapper">
       <el-menu
         :default-active="activeMenu"
@@ -36,13 +33,13 @@ import SidebarItem from './SidebarItem.vue'
 import SidebarLogo from './SidebarLogo.vue'
 import variables from '@/styles/_variables.scss'
 
-@Component({
-  name: 'SideBar',
-  components: {
-    SidebarItem,
-    SidebarLogo
-  }
-})
+  @Component({
+    name: 'SideBar',
+    components: {
+      SidebarItem,
+      SidebarLogo
+    }
+  })
 export default class extends Vue {
   get sidebar() {
     return AppModule.sidebar
@@ -85,46 +82,49 @@ export default class extends Vue {
 </script>
 
 <style lang="scss">
-.sidebar-container {
-  // reset element-ui css
-  .horizontal-collapse-transition {
-    transition: 0s width ease-in-out, 0s padding-left ease-in-out, 0s padding-right ease-in-out;
-  }
-
-  .scrollbar-wrapper {
-    overflow-x: hidden !important;
-  }
-
-  .el-scrollbar__view {
-    height: 100%
-  }
-
-  .el-scrollbar__bar {
-    &.is-vertical {
-      right: 0px;
+  .sidebar-container {
+    // reset element-ui css
+    .horizontal-collapse-transition {
+      transition:
+        0s width ease-in-out,
+        0s padding-left ease-in-out,
+        0s padding-right ease-in-out;
     }
 
-    &.is-horizontal {
-      display: none;
+    .scrollbar-wrapper {
+      overflow-x: hidden !important;
+    }
+
+    .el-scrollbar__view {
+      height: 100%;
+    }
+
+    .el-scrollbar__bar {
+      &.is-vertical {
+        right: 0px;
+      }
+
+      &.is-horizontal {
+        display: none;
+      }
     }
   }
-}
 </style>
 
 <style lang="scss" scoped>
-.el-scrollbar {
-  height: 100%
-}
-
-.has-logo {
   .el-scrollbar {
-    height: calc(100% - 50px);
+    height: 100%;
   }
-}
 
-.el-menu {
-  border: none;
-  height: 100%;
-  width: 100% !important;
-}
+  .has-logo {
+    .el-scrollbar {
+      height: calc(100% - 50px);
+    }
+  }
+
+  .el-menu {
+    border: none;
+    height: 100%;
+    width: 100% !important;
+  }
 </style>

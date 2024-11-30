@@ -8,7 +8,7 @@ ISSUES MISSING IMPORTANT INFORMATION MAY BE CLOSED WITHOUT INVESTIGATION.
 
 # I'm submitting a
 
-<!-- 
+<!--
 E.g.
     bug report,
     feature request,

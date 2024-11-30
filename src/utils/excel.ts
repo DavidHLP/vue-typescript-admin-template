@@ -35,7 +35,12 @@ const generateArray = (table: HTMLElement) => {
       const cellValue = cell.innerText
       // Skip ranges
       ranges.forEach(function(range) {
-        if (R >= range.s.r && R <= range.e.r && outRow.length >= range.s.c && outRow.length <= range.e.c) {
+        if (
+          R >= range.s.r &&
+          R <= range.e.r &&
+          outRow.length >= range.s.c &&
+          outRow.length <= range.e.c
+        ) {
           for (let i = 0; i <= range.e.c - range.s.c; ++i) outRow.push(null)
         }
       })
@@ -120,7 +125,7 @@ const s2ab = (s: string) => {
   const buf = new ArrayBuffer(s.length)
   const view = new Uint8Array(buf)
   for (let i = 0; i !== s.length; ++i) {
-    view[i] = s.charCodeAt(i) & 0xFF
+    view[i] = s.charCodeAt(i) & 0xff
   }
   return buf
 }
@@ -152,13 +157,24 @@ export const exportTable2Excel = (id: string) => {
       type: 'binary'
     })
 
-    saveAs(new Blob([s2ab(wbout)], {
-      type: 'application/octet-stream'
-    }), 'test.xlsx')
+    saveAs(
+      new Blob([s2ab(wbout)], {
+        type: 'application/octet-stream'
+      }),
+      'test.xlsx'
+    )
   }
 }
 
-export const exportJson2Excel = (header: string[], data: any, filename = 'excel-list', multiHeader: string[][] = [], merges: any[] = [], autoWidth = true, bookType = 'xlsx') => {
+export const exportJson2Excel = (
+  header: string[],
+  data: any,
+  filename = 'excel-list',
+  multiHeader: string[][] = [],
+  merges: any[] = [],
+  autoWidth = true,
+  bookType = 'xlsx'
+) => {
   data = [...data]
   data.unshift(header)
   for (let i = multiHeader.length - 1; i > -1; i--) {
@@ -180,23 +196,25 @@ export const exportJson2Excel = (header: string[], data: any, filename = 'excel-
 
   if (autoWidth) {
     // 设置worksheet每列的最大宽度
-    const colWidth = data.map((row: any) => row.map((val: any) => {
-      // 先判断是否为 null/undefined
-      if (val == null) {
-        return {
-          wch: 10
+    const colWidth = data.map((row: any) =>
+      row.map((val: any) => {
+        // 先判断是否为 null/undefined
+        if (val == null) {
+          return {
+            wch: 10
+          }
+          // 再判断是否为中文
+        } else if (val.toString().charCodeAt(0) > 255) {
+          return {
+            wch: val.toString().length * 2
+          }
+        } else {
+          return {
+            wch: val.toString().length
+          }
         }
-      // 再判断是否为中文
-      } else if (val.toString().charCodeAt(0) > 255) {
-        return {
-          wch: val.toString().length * 2
-        }
-      } else {
-        return {
-          wch: val.toString().length
-        }
-      }
-    }))
+      })
+    )
     // 以第一行为初始值
     const result = colWidth[0]
     for (let i = 1; i < colWidth.length; i++) {
@@ -219,7 +237,10 @@ export const exportJson2Excel = (header: string[], data: any, filename = 'excel-
     type: 'binary'
   })
 
-  saveAs(new Blob([s2ab(wbout)], {
-    type: 'application/octet-stream'
-  }), `${filename}.${bookType}`)
+  saveAs(
+    new Blob([s2ab(wbout)], {
+      type: 'application/octet-stream'
+    }),
+    `${filename}.${bookType}`
+  )
 }

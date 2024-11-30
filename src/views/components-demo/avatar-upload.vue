@@ -2,10 +2,7 @@
   <div class="components-container">
     <aside>
       This is based on
-      <a
-        class="link-type"
-        href="//github.com/dai-siki/vue-image-crop-upload"
-      >
+      <a class="link-type" href="//github.com/dai-siki/vue-image-crop-upload">
         vue-image-crop-upload
       </a>
     </aside>
@@ -37,38 +34,40 @@ import { Component, Vue } from 'vue-property-decorator'
 import AvatarUpload from '@/components/AvatarUpload/index.vue'
 import PanThumb from '@/components/PanThumb/index.vue'
 
-@Component({
-  name: 'AvatarUploadDemo',
-  components: {
-    AvatarUpload,
-    PanThumb
-  }
-})
+  @Component({
+    name: 'AvatarUploadDemo',
+    components: {
+      AvatarUpload,
+      PanThumb
+    }
+  })
 export default class extends Vue {
-  private showImageUpload = false
-  private image = 'https://wpimg.wallstcn.com/577965b9-bb9e-4e02-9f0c-095b41417191'
-  private params = { someParams: 'your_params_goes_here' }
-  private headers = { smail: '*_~' }
+    private showImageUpload = false
+    private image =
+      'https://wpimg.wallstcn.com/577965b9-bb9e-4e02-9f0c-095b41417191'
 
-  private toggleShow() {
-    this.showImageUpload = !this.showImageUpload
-  }
+    private params = { someParams: 'your_params_goes_here' }
+    private headers = { smail: '*_~' }
 
-  private onCropUploadSuccess(jsonData: any, field: string) {
-    this.showImageUpload = false
-    this.image = jsonData.files[field]
-  }
+    private toggleShow() {
+      this.showImageUpload = !this.showImageUpload
+    }
 
-  private onClose() {
-    this.showImageUpload = false
-  }
+    private onCropUploadSuccess(jsonData: any, field: string) {
+      this.showImageUpload = false
+      this.image = jsonData.files[field]
+    }
+
+    private onClose() {
+      this.showImageUpload = false
+    }
 }
 </script>
 
 <style lang="scss" scoped>
-.avatar {
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-}
+  .avatar {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+  }
 </style>

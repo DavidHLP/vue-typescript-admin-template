@@ -6,13 +6,13 @@
 
 Messages must be matched by the following regex:
 
-``` js
-/^(Revert: )?(Feature|Fix|Docs|Improve|Config|Example|Refactor|Style|Test|Build|CI)(\(.+\))?: .{1,80}/
+```js
+;/^(Revert: )?(Feature|Fix|Docs|Improve|Config|Example|Refactor|Style|Test|Build|CI)(\(.+\))?: .{1,80}/
 ```
 
 ## Commit Message Format
 
-Each commit message consists of a **header**, a **body** and a **footer**.  The header has a special format that includes a **type**, a **scope** and a **subject**:
+Each commit message consists of a **header**, a **body** and a **footer**. The header has a special format that includes a **type**, a **scope** and a **subject**:
 
 ```text
 <type>(<scope>): <subject>
@@ -89,17 +89,17 @@ If the commit reverts a previous commit, it should begin with `Revert: `, follow
 
 Must be one of the following:
 
-* **Build**: Changes that affect the build system or external dependencies (example scopes: gulp, npm, yarn)
-* **CI**: Changes to CI related configuration files and scripts (example scopes: travis, circle, browserstack)
-* **Config**: Changes to other configuration files (example scopes: webpack, babel, docker)
-* **Docs**: Documentation only changes (example scopes: readme, changelog)
-* **Example**: Changes for example code
-* **Feature**: A new feature
-* **Fix**: A bug fix
-* **Improve**: Backwards-compatible enhancement changes
-* **Refactor**: A code change that neither fixes a bug nor adds a feature
-* **Style**: Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)
-* **Test**: Changes for testing code
+- **Build**: Changes that affect the build system or external dependencies (example scopes: gulp, npm, yarn)
+- **CI**: Changes to CI related configuration files and scripts (example scopes: travis, circle, browserstack)
+- **Config**: Changes to other configuration files (example scopes: webpack, babel, docker)
+- **Docs**: Documentation only changes (example scopes: readme, changelog)
+- **Example**: Changes for example code
+- **Feature**: A new feature
+- **Fix**: A bug fix
+- **Improve**: Backwards-compatible enhancement changes
+- **Refactor**: A code change that neither fixes a bug nor adds a feature
+- **Style**: Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)
+- **Test**: Changes for testing code
 
 If the prefix is `Feature` or `Fix`, it will appear in the changelog. However if there is any [BREAKING CHANGE](#footer), the commit will always appear in the changelog.
 
@@ -111,9 +111,9 @@ The scope could be anything specifying place of the commit change. For example `
 
 The subject contains succinct description of the change:
 
-* use the imperative, present tense: "change" not "changed" nor "changes"
-* don't capitalize the first letter
-* no dot (.) at the end
+- use the imperative, present tense: "change" not "changed" nor "changes"
+- don't capitalize the first letter
+- no dot (.) at the end
 
 ### Body
 

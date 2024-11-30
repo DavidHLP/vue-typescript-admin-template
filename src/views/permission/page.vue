@@ -8,17 +8,19 @@
 import { Component, Vue } from 'vue-property-decorator'
 import SwitchRoles from './components/SwitchRoles.vue'
 
-@Component({
-  name: 'PagePermission',
-  components: {
-    SwitchRoles
-  }
-})
+  @Component({
+    name: 'PagePermission',
+    components: {
+      SwitchRoles
+    }
+  })
 export default class extends Vue {
   private handleRolesChange() {
-    this.$router.push({ path: '/permission/index?' + +new Date() }).catch(err => {
-      console.warn(err)
-    })
+    this.$router
+      .push({ path: '/permission/index?' + +new Date() })
+      .catch(err => {
+        console.warn(err)
+      })
   }
 }
 </script>

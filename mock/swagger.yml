@@ -628,7 +628,7 @@ paths:
           required: true
           description: The data for updated user.
           schema:
-            $ref: "#/components/schemas/User"
+            $ref: '#/components/schemas/User'
       responses:
         200:
           description: OK
@@ -812,12 +812,12 @@ components:
         pageviews:
           $ref: '#/components/schemas/Pageviews/properties/pageviews'
       required:
-       - id
-       - status
-       - title
-       - timestamp
-       - importance
-       - author
+        - id
+        - status
+        - title
+        - timestamp
+        - importance
+        - author
     Pageviews:
       type: object
       properties:
@@ -916,10 +916,10 @@ components:
         - roles
     Timestamp:
       oneOf:
-      - type: integer
-        format: int32
-        example: 1559605283
-      - type: string
-        format: date-time
-        example: 2017-07-21T17:32:28Z
+        - type: integer
+          format: int32
+          example: 1559605283
+        - type: string
+          format: date-time
+          example: 2017-07-21T17:32:28Z
     AnyValue: {}

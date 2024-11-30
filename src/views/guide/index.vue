@@ -2,10 +2,9 @@
   <div class="app-container">
     <aside>
       {{ $t('guide.description') }}
-      <a
-        href="https://github.com/kamranahmedse/driver.js"
-        target="_blank"
-      >driver.js.</a>
+      <a href="https://github.com/kamranahmedse/driver.js" target="_blank"
+        >driver.js.</a
+      >
     </aside>
     <el-button
       icon="el-icon-question"
@@ -23,21 +22,21 @@ import 'driver.js/dist/driver.min.css'
 import { Component, Vue } from 'vue-property-decorator'
 import steps from './steps'
 
-@Component({
-  name: 'Guide'
-})
+  @Component({
+    name: 'Guide'
+  })
 export default class extends Vue {
-  private driver: Driver | null = null
+    private driver: Driver | null = null
 
-  mounted() {
-    this.driver = new Driver()
-  }
-
-  private guide() {
-    if (this.driver) {
-      this.driver.defineSteps(steps)
-      this.driver.start()
+    mounted() {
+      this.driver = new Driver()
     }
-  }
+
+    private guide() {
+      if (this.driver) {
+        this.driver.defineSteps(steps)
+        this.driver.start()
+      }
+    }
 }
 </script>

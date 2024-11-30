@@ -10,11 +10,11 @@ If you find a bug in the source code, you can help us by [submitting an issue](#
 
 ## Missing a Feature
 
-You can *request* a new feature by [submitting an issue](#submitting-an-issue) to our GitHub Repository. If you would like to *implement* a new feature, please submit an issue with a proposal for your work first, to be sure that we can use it. Please consider what kind of change it is:
+You can _request_ a new feature by [submitting an issue](#submitting-an-issue) to our GitHub Repository. If you would like to _implement_ a new feature, please submit an issue with a proposal for your work first, to be sure that we can use it. Please consider what kind of change it is:
 
-* For a **Major Feature**, first open an issue and outline your proposal so that it can be discussed. This will also allow us to better coordinate our efforts, prevent duplication of work, and help you to craft the change so that it is successfully accepted into the project.
+- For a **Major Feature**, first open an issue and outline your proposal so that it can be discussed. This will also allow us to better coordinate our efforts, prevent duplication of work, and help you to craft the change so that it is successfully accepted into the project.
 
-* **Small Features** can be crafted and directly [submitted as a Pull Request](#submitting-a-pull-request).
+- **Small Features** can be crafted and directly [submitted as a Pull Request](#submitting-a-pull-request).
 
 ## Submission Guidelines
 
@@ -40,21 +40,21 @@ Before you submit your Pull Request (PR) consider the following guidelines:
 
 1. Make your changes in a new git branch.
 
-    ```shell
-    git checkout -b my-new-feature master
-    ```
+   ```shell
+   git checkout -b my-new-feature master
+   ```
 
 1. Commit your changes using a descriptive commit message that follows our [commit message convention](#commit-message-convention). Adherence to these conventions is necessary because release notes are automatically generated from these messages.
 
-    ```shell
-    git commit -am 'Add some feature'
-    ```
+   ```shell
+   git commit -am 'Add some feature'
+   ```
 
 1. Push your branch.
 
-    ```shell
-    git push origin my-new-feature
-    ```
+   ```shell
+   git push origin my-new-feature
+   ```
 
 1. Send a pull request :D
 
@@ -65,32 +65,32 @@ That's it! Thank you for your contribution!
 After your pull request is merged, you can safely delete your branch and pull the changes
 from the main (upstream) repository:
 
-* Delete the remote branch on GitHub either through the GitHub web UI or your local shell as follows:
+- Delete the remote branch on GitHub either through the GitHub web UI or your local shell as follows:
 
-    ```shell
-    git push origin --delete my-new-feature
-    ```
+  ```shell
+  git push origin --delete my-new-feature
+  ```
 
-* Check out the master branch:
+- Check out the master branch:
 
-    ```shell
-    git checkout master -f
-    ```
+  ```shell
+  git checkout master -f
+  ```
 
-* Delete the local branch:
+- Delete the local branch:
 
-    ```shell
-    git branch -D my-new-feature
-    ```
+  ```shell
+  git branch -D my-new-feature
+  ```
 
-* Update your master with the latest upstream version:
+- Update your master with the latest upstream version:
 
-    ```shell
-    git pull
-    ```
+  ```shell
+  git pull
+  ```
 
 ## Commit Message Convention
 
-We have very precise rules over how our git commit messages can be formatted.  This leads to **more readable messages** that are easy to follow when looking through the **project history**.  But also, we use the git commit messages to **generate the change log**.
+We have very precise rules over how our git commit messages can be formatted. This leads to **more readable messages** that are easy to follow when looking through the **project history**. But also, we use the git commit messages to **generate the change log**.
 
 Please read and follow the [Commit Message Format](https://github.com/Armour/vue-typescript-admin-template/blob/master/.github/COMMIT_CONVENTION.md).

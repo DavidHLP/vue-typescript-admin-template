@@ -14,6 +14,7 @@ export interface IArticleData {
   reviewer: string
   type: string
   pageviews: number
+  iscreate: null | boolean
 }
 
 export interface IRoleData {

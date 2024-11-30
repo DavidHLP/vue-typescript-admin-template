@@ -4,7 +4,8 @@ import { IArticleData } from '../src/api/types'
 
 const articleList: IArticleData[] = []
 const articleCount = 100
-const mockFullContent = '<p>I am testing data, I am testing data.</p><p><img src="https://wpimg.wallstcn.com/4c69009c-0fd4-4153-b112-6cb53d1cf943"></p>'
+const mockFullContent =
+  '<p>I am testing data, I am testing data.</p><p><img src="https://wpimg.wallstcn.com/4c69009c-0fd4-4153-b112-6cb53d1cf943"></p>'
 
 for (let i = 0; i < articleCount; i++) {
   articleList.push({
@@ -40,7 +41,11 @@ export const getArticles = (req: Request, res: Response) => {
     mockList = mockList.reverse()
   }
 
-  const pageList = mockList.filter((_, index) => index < (limit as number) * (page as number) && index >= (limit as number) * (page as number - 1))
+  const pageList = mockList.filter(
+    (_, index) =>
+      index < (limit as number) * (page as number) &&
+      index >= (limit as number) * ((page as number) - 1)
+  )
 
   return res.json({
     code: 20000,

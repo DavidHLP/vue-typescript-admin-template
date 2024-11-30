@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-button
       :loading="downloadLoading"
-      style="margin-bottom:20px"
+      style="margin-bottom: 20px"
       type="primary"
       icon="el-icon-document"
       @click="handleDownload"
@@ -19,48 +19,29 @@
       fit
       highlight-current-row
     >
-      <el-table-column
-        align="center"
-        label="Id"
-        width="95"
-      >
+      <el-table-column align="center" label="Id" width="95">
         <template slot-scope="{$index}">
           {{ $index }}
         </template>
       </el-table-column>
-      <el-table-column
-        label="Main Information"
-        align="center"
-      >
+      <el-table-column label="Main Information" align="center">
         <el-table-column label="Title">
           <template slot-scope="{row}">
             {{ row.title }}
           </template>
         </el-table-column>
-        <el-table-column
-          label="Author"
-          align="center"
-          width="180"
-        >
+        <el-table-column label="Author" align="center" width="180">
           <template slot-scope="{row}">
             <el-tag>{{ row.author }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column
-          label="Readings"
-          align="center"
-          width="115"
-        >
+        <el-table-column label="Readings" align="center" width="115">
           <template slot-scope="{row}">
             {{ row.pageviews }}
           </template>
         </el-table-column>
       </el-table-column>
-      <el-table-column
-        align="center"
-        label="Date"
-        width="220"
-      >
+      <el-table-column align="center" label="Date" width="220">
         <template slot-scope="{row}">
           <i class="el-icon-time" />
           <span>{{ row.timestamp | parseTime }}</span>
@@ -77,38 +58,40 @@ import { IArticleData } from '@/api/types'
 import { formatJson } from '@/utils'
 import { exportJson2Excel } from '@/utils/excel'
 
-@Component({
-  name: 'MergeHeader'
-})
+  @Component({
+    name: 'MergeHeader'
+  })
 export default class extends Vue {
-  private list: IArticleData[] = []
-  private listLoading = true
-  private downloadLoading = false
+    private list: IArticleData[] = []
+    private listLoading = true
+    private downloadLoading = false
 
-  created() {
-    this.fetchData()
-  }
+    created() {
+      this.fetchData()
+    }
 
-  private async fetchData() {
-    this.listLoading = true
-    const { data } = await getArticles({ /* Your params here */ })
-    this.list = data.items
-    // Just to simulate the time of the request
-    setTimeout(() => {
-      this.listLoading = false
-    }, 0.5 * 1000)
-  }
+    private async fetchData() {
+      this.listLoading = true
+      const { data } = await getArticles({
+        /* Your params here */
+      })
+      this.list = data.items
+      // Just to simulate the time of the request
+      setTimeout(() => {
+        this.listLoading = false
+      }, 0.5 * 1000)
+    }
 
-  private handleDownload() {
-    this.downloadLoading = true
-    const multiHeader = [['Id', 'Main Information', '', '', 'Date']]
-    const header = ['', 'Title', 'Author', 'Readings', '']
-    const filterVal = ['id', 'title', 'author', 'pageviews', 'timestamp']
-    const list = this.list
-    const data = formatJson(filterVal, list)
-    const merges = ['A1:A2', 'B1:D1', 'E1:E2']
-    exportJson2Excel(header, data, 'merge-header', multiHeader, merges)
-    this.downloadLoading = false
-  }
+    private handleDownload() {
+      this.downloadLoading = true
+      const multiHeader = [['Id', 'Main Information', '', '', 'Date']]
+      const header = ['', 'Title', 'Author', 'Readings', '']
+      const filterVal = ['id', 'title', 'author', 'pageviews', 'timestamp']
+      const list = this.list
+      const data = formatJson(filterVal, list)
+      const merges = ['A1:A2', 'B1:D1', 'E1:E2']
+      exportJson2Excel(header, data, 'merge-header', multiHeader, merges)
+      this.downloadLoading = false
+    }
 }
 </script>
