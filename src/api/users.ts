@@ -52,3 +52,9 @@ export const register = (data: any) =>
     method: 'post',
     data
   })
+
+export const sendcode = (email: string) =>
+  request({
+    url: `/users/sendcode/${email}`,
+    method: 'get'
+  })

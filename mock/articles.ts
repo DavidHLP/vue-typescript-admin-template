@@ -23,7 +23,8 @@ for (let i = 0; i < articleCount; i++) {
     author: faker.name.findName(),
     reviewer: faker.name.findName(),
     type: faker.random.arrayElement(['CN', 'US', 'JP', 'EU']),
-    pageviews: faker.datatype.number({ min: 300, max: 500 })
+    pageviews: faker.datatype.number({ min: 300, max: 500 }),
+    iscreate: null
   })
 }
 
