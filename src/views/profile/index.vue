@@ -27,11 +27,11 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { UserModule } from '@/store/modules/user'
 import Account from './components/Account.vue'
 import Activity from './components/Activity.vue'
 import Timeline from './components/Timeline.vue'
 import UserCard from './components/UserCard.vue'
+import { UserModule } from '@/store/modules/user'
 
 export interface IProfile {
     name: string

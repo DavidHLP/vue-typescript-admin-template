@@ -8,7 +8,7 @@ import Layout from '@/layout/index.vue'
 import componentsRouter from './modules/components'
 import chartsRouter from './modules/charts'
 import tableRouter from './modules/table'
-import nestedRouter from './modules/nested'
+// import nestedRouter from './modules/nested'
 
 Vue.use(VueRouter)
 
@@ -102,7 +102,42 @@ export const constantRoutes: RouteConfig[] = [
         meta: {
           title: 'dashboard',
           icon: 'dashboard',
-          affix: true
+          affix: true,
+          roles: ['ADMIN', 'GUEST', 'MANAGEMENT']
+        }
+      }
+    ]
+  },
+  {
+    path: '/usermanage',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () =>
+          import(/* webpackChunkName: "tab" */ '@/views/usermanage/index.vue'),
+        name: 'usermanage',
+        meta: {
+          title: 'usermanage',
+          icon: 'user',
+          roles: ['ADMIN']
+        }
+      }
+    ]
+  },
+  {
+    path: '/rolemanage',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () =>
+          import(/* webpackChunkName: "tab" */ '@/views/rolemanage/index.vue'),
+        name: 'rolemanage',
+        meta: {
+          title: 'rolemanage',
+          icon: 'user',
+          roles: ['ADMIN']
         }
       }
     ]
@@ -119,24 +154,24 @@ export const constantRoutes: RouteConfig[] = [
   //     }
   //   ]
   // },
-  {
-    path: '/guide',
-    component: Layout,
-    redirect: '/guide/index',
-    children: [
-      {
-        path: 'index',
-        component: () =>
-          import(/* webpackChunkName: "guide" */ '@/views/guide/index.vue'),
-        name: 'Guide',
-        meta: {
-          title: 'guide',
-          icon: 'guide',
-          noCache: true
-        }
-      }
-    ]
-  },
+  // {
+  //   path: '/guide',
+  //   component: Layout,
+  //   redirect: '/guide/index',
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       component: () =>
+  //         import(/* webpackChunkName: "guide" */ '@/views/guide/index.vue'),
+  //       name: 'Guide',
+  //       meta: {
+  //         title: 'guide',
+  //         icon: 'guide',
+  //         noCache: true
+  //       }
+  //     }
+  //   ]
+  // },
   {
     path: '/profile',
     component: Layout,
@@ -151,7 +186,8 @@ export const constantRoutes: RouteConfig[] = [
         meta: {
           title: 'profile',
           icon: 'user',
-          noCache: true
+          noCache: true,
+          roles: ['ADMIN', 'GUEST', 'MANAGEMENT']
         }
       }
     ]
@@ -163,76 +199,76 @@ export const constantRoutes: RouteConfig[] = [
  * the routes that need to be dynamically loaded based on user roles
  */
 export const asyncRoutes: RouteConfig[] = [
-  {
-    path: '/permission',
-    component: Layout,
-    redirect: '/permission/directive',
-    meta: {
-      title: 'permission',
-      icon: 'lock',
-      roles: ['admin', 'editor'], // you can set roles in root nav
-      alwaysShow: true // will always show the root menu
-    },
-    children: [
-      {
-        path: 'page',
-        component: () =>
-          import(
-            /* webpackChunkName: "permission-page" */ '@/views/permission/page.vue'
-          ),
-        name: 'PagePermission',
-        meta: {
-          title: 'pagePermission',
-          roles: ['admin'] // or you can only set roles in sub nav
-        }
-      },
-      {
-        path: 'directive',
-        component: () =>
-          import(
-            /* webpackChunkName: "permission-directive" */ '@/views/permission/directive.vue'
-          ),
-        name: 'DirectivePermission',
-        meta: {
-          title: 'directivePermission'
-          // if do not set roles, means: this page does not require permission
-        }
-      },
-      {
-        path: 'role',
-        component: () =>
-          import(
-            /* webpackChunkName: "permission-role" */ '@/views/permission/role.vue'
-          ),
-        name: 'RolePermission',
-        meta: {
-          title: 'rolePermission',
-          roles: ['admin']
-        }
-      }
-    ]
-  },
-  {
-    path: '/icon',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        component: () =>
-          import(/* webpackChunkName: "icons" */ '@/views/icons/index.vue'),
-        name: 'Icons',
-        meta: {
-          title: 'icons',
-          icon: 'icon',
-          noCache: true
-        }
-      }
-    ]
-  },
+  // {
+  //   path: '/permission',
+  //   component: Layout,
+  //   redirect: '/permission/directive',
+  //   meta: {
+  //     title: 'permission',
+  //     icon: 'lock',
+  //     roles: ['admin', 'editor'], // you can set roles in root nav
+  //     alwaysShow: true // will always show the root menu
+  //   },
+  //   children: [
+  //     {
+  //       path: 'page',
+  //       component: () =>
+  //         import(
+  //           /* webpackChunkName: "permission-page" */ '@/views/permission/page.vue'
+  //         ),
+  //       name: 'PagePermission',
+  //       meta: {
+  //         title: 'pagePermission',
+  //         roles: ['admin'] // or you can only set roles in sub nav
+  //       }
+  //     },
+  //     {
+  //       path: 'directive',
+  //       component: () =>
+  //         import(
+  //           /* webpackChunkName: "permission-directive" */ '@/views/permission/directive.vue'
+  //         ),
+  //       name: 'DirectivePermission',
+  //       meta: {
+  //         title: 'directivePermission'
+  //         // if do not set roles, means: this page does not require permission
+  //       }
+  //     },
+  //     {
+  //       path: 'role',
+  //       component: () =>
+  //         import(
+  //           /* webpackChunkName: "permission-role" */ '@/views/permission/role.vue'
+  //         ),
+  //       name: 'RolePermission',
+  //       meta: {
+  //         title: 'rolePermission',
+  //         roles: ['ADMIN']
+  //       }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/icon',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       component: () =>
+  //         import(/* webpackChunkName: "icons" */ '@/views/icons/index.vue'),
+  //       name: 'Icons',
+  //       meta: {
+  //         title: 'icons',
+  //         icon: 'icon',
+  //         noCache: true
+  //       }
+  //     }
+  //   ]
+  // },
   /** when your routing map is too long, you can split it into small modules **/
   componentsRouter,
   chartsRouter,
-  nestedRouter,
+  // nestedRouter,
   tableRouter,
   {
     path: '/example',
@@ -252,7 +288,8 @@ export const asyncRoutes: RouteConfig[] = [
         name: 'CreateArticle',
         meta: {
           title: 'createArticle',
-          icon: 'edit'
+          icon: 'edit',
+          roles: ['ADMIN', 'GUEST', 'MANAGEMENT']
         }
       },
       {
@@ -266,7 +303,8 @@ export const asyncRoutes: RouteConfig[] = [
           title: 'editArticle',
           noCache: true,
           activeMenu: '/example/list',
-          hidden: true
+          hidden: true,
+          roles: ['ADMIN', 'GUEST', 'MANAGEMENT']
         }
       },
       {
@@ -278,7 +316,8 @@ export const asyncRoutes: RouteConfig[] = [
         name: 'ArticleList',
         meta: {
           title: 'articleList',
-          icon: 'list'
+          icon: 'list',
+          roles: ['ADMIN', 'GUEST', 'MANAGEMENT']
         }
       }
     ]
@@ -294,72 +333,74 @@ export const asyncRoutes: RouteConfig[] = [
         name: 'Tab',
         meta: {
           title: 'tab',
-          icon: 'tab'
+          icon: 'tab',
+          roles: ['ADMIN', 'GUEST', 'MANAGEMENT']
         }
       }
     ]
   },
-  {
-    path: '/error',
-    component: Layout,
-    redirect: 'noredirect',
-    meta: {
-      title: 'errorPages',
-      icon: '404'
-    },
-    children: [
-      {
-        path: '401',
-        component: () =>
-          import(
-            /* webpackChunkName: "error-page-401" */ '@/views/error-page/401.vue'
-          ),
-        name: 'Page401',
-        meta: {
-          title: 'page401',
-          noCache: true
-        }
-      },
-      {
-        path: '404',
-        component: () =>
-          import(
-            /* webpackChunkName: "error-page-404" */ '@/views/error-page/404.vue'
-          ),
-        name: 'Page404',
-        meta: {
-          title: 'page404',
-          noCache: true
-        }
-      }
-    ]
-  },
-  {
-    path: '/error-log',
-    component: Layout,
-    redirect: 'noredirect',
-    children: [
-      {
-        path: 'log',
-        component: () =>
-          import(
-            /* webpackChunkName: "error-log" */ '@/views/error-log/index.vue'
-          ),
-        name: 'ErrorLog',
-        meta: {
-          title: 'errorLog',
-          icon: 'bug'
-        }
-      }
-    ]
-  },
+  // {
+  //   path: '/error',
+  //   component: Layout,
+  //   redirect: 'noredirect',
+  //   meta: {
+  //     title: 'errorPages',
+  //     icon: '404'
+  //   },
+  //   children: [
+  //     {
+  //       path: '401',
+  //       component: () =>
+  //         import(
+  //           /* webpackChunkName: "error-page-401" */ '@/views/error-page/401.vue'
+  //         ),
+  //       name: 'Page401',
+  //       meta: {
+  //         title: 'page401',
+  //         noCache: true
+  //       }
+  //     },
+  //     {
+  //       path: '404',
+  //       component: () =>
+  //         import(
+  //           /* webpackChunkName: "error-page-404" */ '@/views/error-page/404.vue'
+  //         ),
+  //       name: 'Page404',
+  //       meta: {
+  //         title: 'page404',
+  //         noCache: true
+  //       }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/error-log',
+  //   component: Layout,
+  //   redirect: 'noredirect',
+  //   children: [
+  //     {
+  //       path: 'log',
+  //       component: () =>
+  //         import(
+  //           /* webpackChunkName: "error-log" */ '@/views/error-log/index.vue'
+  //         ),
+  //       name: 'ErrorLog',
+  //       meta: {
+  //         title: 'errorLog',
+  //         icon: 'bug'
+  //       }
+  //     }
+  //   ]
+  // },
   {
     path: '/excel',
     component: Layout,
     redirect: '/excel/export-excel',
     meta: {
       title: 'excel',
-      icon: 'excel'
+      icon: 'excel',
+      roles: ['ADMIN', 'GUEST', 'MANAGEMENT']
     },
     children: [
       {
@@ -369,7 +410,7 @@ export const asyncRoutes: RouteConfig[] = [
             /* webpackChunkName: "export-excel" */ '@/views/excel/export-excel.vue'
           ),
         name: 'ExportExcel',
-        meta: { title: 'exportExcel' }
+        meta: { title: 'exportExcel', roles: ['ADMIN', 'GUEST', 'MANAGEMENT'] }
       },
       {
         path: 'export-selected-excel',
@@ -378,7 +419,7 @@ export const asyncRoutes: RouteConfig[] = [
             /* webpackChunkName: "select-excel" */ '@/views/excel/select-excel.vue'
           ),
         name: 'SelectExcel',
-        meta: { title: 'selectExcel' }
+        meta: { title: 'selectExcel', roles: ['ADMIN', 'GUEST', 'MANAGEMENT'] }
       },
       {
         path: 'export-merge-header',
@@ -387,7 +428,7 @@ export const asyncRoutes: RouteConfig[] = [
             /* webpackChunkName: "merge-header" */ '@/views/excel/merge-header.vue'
           ),
         name: 'MergeHeader',
-        meta: { title: 'mergeHeader' }
+        meta: { title: 'mergeHeader', roles: ['ADMIN', 'GUEST', 'MANAGEMENT'] }
       },
       {
         path: 'upload-excel',
@@ -396,7 +437,7 @@ export const asyncRoutes: RouteConfig[] = [
             /* webpackChunkName: "upload-excel" */ '@/views/excel/upload-excel.vue'
           ),
         name: 'UploadExcel',
-        meta: { title: 'uploadExcel' }
+        meta: { title: 'uploadExcel', roles: ['ADMIN', 'GUEST', 'MANAGEMENT'] }
       }
     ]
   },
@@ -407,7 +448,8 @@ export const asyncRoutes: RouteConfig[] = [
     meta: {
       title: 'zip',
       icon: 'zip',
-      alwaysShow: true // will always show the root menu
+      alwaysShow: true, // will always show the root menu
+      roles: ['ADMIN', 'GUEST', 'MANAGEMENT']
     },
     children: [
       {
@@ -415,52 +457,52 @@ export const asyncRoutes: RouteConfig[] = [
         component: () =>
           import(/* webpackChunkName: "zip" */ '@/views/zip/index.vue'),
         name: 'ExportZip',
-        meta: { title: 'exportZip' }
+        meta: { title: 'exportZip', roles: ['ADMIN', 'GUEST', 'MANAGEMENT'] }
       }
     ]
   },
-  {
-    path: '/pdf',
-    component: Layout,
-    redirect: '/pdf/index',
-    children: [
-      {
-        path: 'index',
-        component: () =>
-          import(/* webpackChunkName: "pdf" */ '@/views/pdf/index.vue'),
-        name: 'PDF',
-        meta: {
-          title: 'pdf',
-          icon: 'pdf'
-        }
-      }
-    ]
-  },
+  // {
+  //   path: '/pdf',
+  //   component: Layout,
+  //   redirect: '/pdf/index',
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       component: () =>
+  //         import(/* webpackChunkName: "pdf" */ '@/views/pdf/index.vue'),
+  //       name: 'PDF',
+  //       meta: {
+  //         title: 'pdf',
+  //         icon: 'pdf'
+  //       }
+  //     }
+  //   ]
+  // },
   {
     path: '/pdf-download-example',
     component: () =>
       import(
         /* webpackChunkName: "pdf-download-example" */ '@/views/pdf/download.vue'
       ),
-    meta: { hidden: true }
+    meta: { hidden: true, roles: ['ADMIN', 'GUEST', 'MANAGEMENT'] }
   },
-  {
-    path: '/theme',
-    component: Layout,
-    redirect: 'noredirect',
-    children: [
-      {
-        path: 'index',
-        component: () =>
-          import(/* webpackChunkName: "theme" */ '@/views/theme/index.vue'),
-        name: 'Theme',
-        meta: {
-          title: 'theme',
-          icon: 'theme'
-        }
-      }
-    ]
-  },
+  // {
+  //   path: '/theme',
+  //   component: Layout,
+  //   redirect: 'noredirect',
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       component: () =>
+  //         import(/* webpackChunkName: "theme" */ '@/views/theme/index.vue'),
+  //       name: 'Theme',
+  //       meta: {
+  //         title: 'theme',
+  //         icon: 'theme'
+  //       }
+  //     }
+  //   ]
+  // },
   {
     path: '/clipboard',
     component: Layout,
@@ -475,40 +517,42 @@ export const asyncRoutes: RouteConfig[] = [
         name: 'Clipboard',
         meta: {
           title: 'clipboard',
-          icon: 'clipboard'
+          icon: 'clipboard',
+          roles: ['ADMIN', 'GUEST', 'MANAGEMENT']
         }
       }
     ]
   },
+  // {
+  //   path: '/i18n',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       component: () =>
+  //         import(
+  //           /* webpackChunkName: "i18n-demo" */ '@/views/i18n-demo/index.vue'
+  //         ),
+  //       name: 'I18n',
+  //       meta: {
+  //         title: 'i18n',
+  //         icon: 'international'
+  //       }
+  //     }
+  //   ]
+  // },
   {
-    path: '/i18n',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        component: () =>
-          import(
-            /* webpackChunkName: "i18n-demo" */ '@/views/i18n-demo/index.vue'
-          ),
-        name: 'I18n',
-        meta: {
-          title: 'i18n',
-          icon: 'international'
-        }
-      }
-    ]
-  },
-  {
-    path: 'https://github.com/Armour/vue-typescript-admin-template',
+    path: 'https://github.com/DavidHLP/vue-typescript-admin-template',
     meta: {
       title: 'externalLink',
-      icon: 'link'
+      icon: 'link',
+      roles: ['ADMIN', 'GUEST', 'MANAGEMENT']
     }
   },
   {
     path: '*',
     redirect: '/404',
-    meta: { hidden: true }
+    meta: { hidden: true, roles: ['ADMIN', 'GUEST', 'MANAGEMENT'] }
   }
 ]
 

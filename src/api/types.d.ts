@@ -43,3 +43,29 @@ export interface IUserData {
   introduction: string
   roles: string[]
 }
+
+export interface IPermissionsInfo{
+  id: number
+  permission: string
+  description: string
+  status: boolean
+}
+
+export interface IRoleInfo{
+  id: number
+  roleName: string
+  status: boolean
+  permissions: IPermissionsInfo []
+}
+
+export interface IUserInfo{
+  id: number
+  name: string
+  password: string
+  email: string
+  phone: string
+  avatar: string
+  introduction: string
+  status: boolean
+  roles: IRoleInfo[]
+}

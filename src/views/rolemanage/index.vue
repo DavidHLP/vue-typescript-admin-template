@@ -2,37 +2,37 @@
   <div class="app-container">
     <div class="filter-container">
       <el-input
-        v-model="listQuery.title"
-        :placeholder="$t('table.title')"
+        v-model="listQuery.roleName"
+        :placeholder="'角色名'"
         style="width: 200px"
         class="filter-item"
         @keyup.enter.native="handleFilter"
       />
       <el-select
-        v-model="listQuery.importance"
-        :placeholder="$t('table.importance')"
+        v-model="listQuery.permission"
+        :placeholder="'权限'"
         clearable
         style="width: 120px"
         class="filter-item"
       >
         <el-option
-          v-for="item in importanceOptions"
-          :key="item"
-          :label="item"
-          :value="item"
+          v-for="item in rolesOptions"
+          :key="item.id"
+          :label="item.label"
+          :value="item.label"
         />
       </el-select>
       <el-select
-        v-model="listQuery.type"
-        :placeholder="$t('table.type')"
+        v-model="listQuery.status"
+        :placeholder="'账号状态'"
         clearable
         class="filter-item"
         style="width: 130px"
       >
         <el-option
-          v-for="item in calendarTypeOptions"
+          v-for="item in statusTypeOptions"
           :key="item.key"
-          :label="item.displayName + '(' + item.key + ')'"
+          :label="item.displayName"
           :value="item.key"
         />
       </el-select>
@@ -59,6 +59,15 @@
         {{ $t('table.search') }}
       </el-button>
       <el-button
+        v-waves
+        class="filter-item"
+        type="warning"
+        icon="el-icon-refresh"
+        @click="resetFilters"
+      >
+        重置
+      </el-button>
+      <!-- <el-button
         class="filter-item"
         style="margin-left: 10px"
         type="primary"
@@ -66,7 +75,7 @@
         @click="handleCreate"
       >
         {{ $t('table.add') }}
-      </el-button>
+      </el-button> -->
       <el-button
         v-waves
         :loading="downloadLoading"
@@ -97,6 +106,35 @@
       style="width: 100%"
       @sort-change="sortChange"
     >
+      <el-table-column type="expand">
+        <template slot-scope="{row}">
+          <div m="4">
+            <h2>角色详细简介</h2>
+            <el-divider />
+            <p m="t-0 b-2" >{{ row.description }}</p>
+            <br/>
+            <h2>权限详细</h2>
+            <el-table :data="row.permissions" :border="true">
+              <el-table-column label="序号" prop="id" />
+              <el-table-column label="权限信息" prop="permission" />
+              <el-table-column label="权限描述" prop="description" />
+              <el-table-column label="状态" prop="status">
+                <el-tag
+                  v-if="row.status === true"
+                >
+                  活跃
+                </el-tag>
+                <el-tag
+                  v-if="row.status === false"
+                  type="danger"
+                >
+                  失活
+                </el-tag>
+              </el-table-column>
+            </el-table>
+          </div>
+        </template>
+      </el-table-column>
       <el-table-column
         :label="$t('table.id')"
         prop="id"
@@ -109,70 +147,39 @@
           <span>{{ row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.date')" width="180px" align="center">
+      <el-table-column :label="'角色名'" width="200" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.timestamp | parseTime }}</span>
+          <span>{{ row.roleName}}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.title')" min-width="150px">
+      <el-table-column :label="'角色描述'" min-width="200" align="center">
         <template slot-scope="{row}">
-          <span class="link-type" @click="handleUpdate(row)">{{
-            row.title
-          }}</span>
-          <el-tag>{{ row.type | typeFilter }}</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.author')" width="180px" align="center">
-        <template slot-scope="{row}">
-          <span>{{ row.author }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        v-if="showReviewer"
-        :label="$t('table.reviewer')"
-        width="110px"
-        align="center"
-      >
-        <template slot-scope="{row}">
-          <span style="color: red">{{ row.reviewer }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.importance')" width="105px">
-        <template slot-scope="{row}">
-          <svg-icon
-            v-for="n in +row.importance"
-            :key="n"
-            name="star"
-            class="meta-item__icon"
-          />
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.readings')" align="center" width="95">
-        <template slot-scope="{row}">
-          <span
-            v-if="row.pageviews"
-            class="link-type"
-            @click="handleGetPageviews(row.pageviews)"
-            >{{ row.pageviews }}</span
-          >
-          <span v-else>0</span>
+          <span>{{ row.description}}</span>
         </template>
       </el-table-column>
       <el-table-column
         :label="$t('table.status')"
         class-name="status-col"
-        width="100"
+        width="200"
       >
         <template slot-scope="{row}">
-          <el-tag :type="row.status | articleStatusFilter">
-            {{ row.status }}
+          <el-tag
+            v-if="row.status === true"
+          >
+            活跃
+          </el-tag>
+          <el-tag
+            v-if="row.status === false"
+            type="danger"
+          >
+            失活
           </el-tag>
         </template>
       </el-table-column>
       <el-table-column
         :label="$t('table.actions')"
         align="center"
-        width="230"
+        width="260"
         class-name="fixed-width"
       >
         <template slot-scope="{row, $index}">
@@ -180,27 +187,20 @@
             {{ $t('table.edit') }}
           </el-button>
           <el-button
-            v-if="row.status !== 'published'"
-            size="mini"
-            type="success"
-            @click="handleModifyStatus(row, 'published')"
-          >
-            {{ $t('table.publish') }}
-          </el-button>
-          <el-button
-            v-if="row.status !== 'draft'"
-            size="mini"
-            @click="handleModifyStatus(row, 'draft')"
-          >
-            {{ $t('table.draft') }}
-          </el-button>
-          <el-button
-            v-if="row.status !== 'deleted'"
+            v-if="row.status === true"
             size="mini"
             type="danger"
             @click="handleDelete(row, $index)"
           >
-            {{ $t('table.delete') }}
+            冻结
+          </el-button>
+          <el-button
+            v-if="row.status === false"
+            size="mini"
+            type="success"
+            @click="handleEnable(row, $index)"
+          >
+            恢复
           </el-button>
         </template>
       </el-table-column>
@@ -214,68 +214,58 @@
       @pagination="getList"
     />
 
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+    <el-dialog
+      :title="textMap[dialogStatus]"
+      :visible.sync="dialogFormVisible"
+      >
       <el-form
         ref="dataForm"
         :rules="rules"
-        :model="tempArticleData"
         label-position="left"
         label-width="100px"
         style="width: 400px; margin-left: 50px"
       >
-        <el-form-item :label="$t('table.type')" prop="type">
-          <el-select
-            v-model="tempArticleData.type"
-            class="filter-item"
-            placeholder="Please select"
-          >
-            <el-option
-              v-for="item in calendarTypeOptions"
-              :key="item.key"
-              :label="item.displayName"
-              :value="item.key"
-            />
-          </el-select>
-        </el-form-item>
-        <el-form-item :label="$t('table.date')" prop="timestamp">
-          <el-date-picker
-            v-model="tempArticleData.timestamp"
-            type="datetime"
-            placeholder="Please pick a date"
-          />
-        </el-form-item>
-        <el-form-item :label="$t('table.title')" prop="title">
-          <el-input v-model="tempArticleData.title" />
+        <el-form-item :label="'角色名'">
+            <el-input
+              v-model="tempArticleData.roleName"
+              class="filter-item"
+              placeholder="Please select"
+            >
+            </el-input>
         </el-form-item>
         <el-form-item :label="$t('table.status')">
-          <el-select
-            v-model="tempArticleData.status"
-            class="filter-item"
-            placeholder="Please select"
+            <el-select
+              v-model="tempArticleData.status"
+              class="filter-item"
+              placeholder="Please select"
+            >
+              <el-option
+              :value="true"
+              label="活跃"
+              />
+              <el-option
+                :value="false"
+                label="非活跃"
+              />
+            </el-select>
+        </el-form-item>
+        <el-form-item :label="'权限集合'">
+          <el-tree
+            :data="rolesOptions"
+            node-key="id"
+            show-checkbox = true
+            ref="tree"
           >
-            <el-option
-              v-for="item in statusOptions"
-              :key="item"
-              :label="item"
-              :value="item"
-            />
-          </el-select>
+          </el-tree>
         </el-form-item>
-        <el-form-item :label="$t('table.importance')">
-          <el-rate
-            v-model="tempArticleData.importance"
-            :colors="['#99A9BF', '#F7BA2A', '#FF9900']"
-            :max="3"
-            style="margin-top: 8px"
-          />
-        </el-form-item>
-        <el-form-item :label="$t('table.remark')">
-          <el-input
-            v-model="tempArticleData.abstractContent"
-            :autosize="{minRows: 2, maxRows: 4}"
-            type="textarea"
-            placeholder="Please input"
-          />
+        <el-form-item :label="'角色描述'">
+            <el-input
+              v-model="tempArticleData.description"
+              class="filter-item"
+              placeholder="Please select"
+              type="textarea"
+            >
+            </el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -319,26 +309,45 @@ import { Component, Vue } from 'vue-property-decorator'
 import { Form } from 'element-ui'
 import { cloneDeep } from 'lodash'
 import {
-  getArticles,
-  getPageviews,
-  createArticle,
-  updateArticle,
-  defaultArticleData
-} from '@/api/articles'
-import { IArticleData } from '@/api/types'
+  disableById,
+  enableById,
+  updateRole,
+  getRolesAndPermissionsInfo,
+  getPermissionsInfo
+} from '@/api/rolemanage'
+import { IUserInfo } from '@/api/types'
 import { exportJson2Excel } from '@/utils/excel'
-import { formatJson } from '@/utils'
 import Pagination from '@/components/Pagination/index.vue'
+import { get } from 'js-cookie'
 
-const calendarTypeOptions = [
-  { key: 'CN', displayName: 'China' },
-  { key: 'US', displayName: 'USA' },
-  { key: 'JP', displayName: 'Japan' },
-  { key: 'EU', displayName: 'Eurozone' }
+const statusTypeOptions = [
+  { key: 'true', displayName: '活跃' },
+  { key: 'false', displayName: '冻结' }
 ]
 
+interface RoleMid {
+  id: number
+  permission: string
+}
+
+interface RoleOption {
+  id: number
+  label: string
+}
+
+interface UserInfo{
+  id: number
+  name: string
+  avatar: string
+  introduction: string
+  email: string
+  status: true
+  roleId: number | undefined
+  role:{}
+}
+
 // arr to obj, such as { CN : "China", US : "USA" }
-const calendarTypeKeyValue = calendarTypeOptions.reduce(
+const statusTypeKeyValue = statusTypeOptions.reduce(
   (acc: { [key: string]: string }, cur) => {
     acc[cur.key] = cur.displayName
     return acc
@@ -353,32 +362,42 @@ const calendarTypeKeyValue = calendarTypeOptions.reduce(
     },
     filters: {
       typeFilter: (type: string) => {
-        return calendarTypeKeyValue[type]
+        return statusTypeKeyValue[type]
       }
     }
   })
 export default class extends Vue {
     private tableKey = 0
-    private list: IArticleData[] = []
+    private list: IUserInfo[] = []
     private total = 0
     private listLoading = true
     private listQuery = {
       page: 1,
       limit: 20,
-      importance: undefined,
-      title: undefined,
-      type: undefined,
+      roleName: undefined,
+      status: undefined,
+      permission: undefined,
       sort: '+id'
     }
 
-    private importanceOptions = [1, 2, 3]
-    private calendarTypeOptions = calendarTypeOptions
+    private rolesOptions: RoleOption[] = []
+    private statusTypeOptions = statusTypeOptions
     private sortOptions = [
       { label: 'ID Ascending', key: '+id' },
       { label: 'ID Descending', key: '-id' }
     ]
 
-    private statusOptions = ['published', 'draft', 'deleted']
+    private defaultUserInfo: UserInfo = {
+      id: 0,
+      name: '',
+      avatar: '',
+      introduction: '',
+      email: '',
+      status: true,
+      roleId: undefined,
+      roles: {}
+    }
+
     private showReviewer = false
     private dialogFormVisible = false
     private dialogStatus = ''
@@ -400,7 +419,7 @@ export default class extends Vue {
     }
 
     private downloadLoading = false
-    private tempArticleData = defaultArticleData
+    private tempArticleData: UserInfo = this.defaultUserInfo
 
     created() {
       this.getList()
@@ -408,10 +427,15 @@ export default class extends Vue {
 
     private async getList() {
       this.listLoading = true
-      const { data } = await getArticles(this.listQuery)
+      const { data } = await getRolesAndPermissionsInfo(this.listQuery)
+      const response = await getPermissionsInfo()
       this.list = data.items
-      console.log(this.list)
       this.total = data.total
+      this.rolesOptions = (response.data as RoleMid[]).map((element: RoleMid) => ({
+        id: element.id,
+        label: element.permission
+      }))
+
       // Just to simulate the time of the request
       setTimeout(() => {
         this.listLoading = false
@@ -421,15 +445,6 @@ export default class extends Vue {
     private handleFilter() {
       this.listQuery.page = 1
       this.getList()
-    }
-
-    private handleModifyStatus(row: any, status: string) {
-      console.log(status)
-      this.$message({
-        message: '操作成功',
-        type: 'success'
-      })
-      row.status = status
     }
 
     private sortChange(data: any) {
@@ -454,7 +469,7 @@ export default class extends Vue {
     }
 
     private resetTempArticleData() {
-      this.tempArticleData = cloneDeep(defaultArticleData)
+      this.tempArticleData = cloneDeep(this.defaultUserInfo)
     }
 
     private handleCreate() {
@@ -466,80 +481,105 @@ export default class extends Vue {
       })
     }
 
-    private createData() {
-      (this.$refs.dataForm as Form).validate(async valid => {
-        if (valid) {
-          const articleData = this.tempArticleData
-          articleData.id = Math.round(Math.random() * 100) + 1024 // mock a id
-          articleData.author = 'vue-typescript-admin'
-          const { data } = await createArticle({ article: articleData })
-          data.article.timestamp = Date.parse(data.article.timestamp)
-          this.list.unshift(data.article)
-          this.dialogFormVisible = false
-          this.$notify({
-            title: '成功',
-            message: '创建成功',
-            type: 'success',
-            duration: 2000
-          })
-        }
-      })
-    }
+    // private createData() {
+    //   (this.$refs.dataForm as Form).validate(async valid => {
+    //     if (valid) {
+    //       const articleData = this.tempArticleData
+    //       articleData.id = Math.round(Math.random() * 100) + 1024 // mock a id
+    //       const { data } = await createArticle({ article: articleData })
+    //       data.article.timestamp = Date.parse(data.article.timestamp)
+    //       this.list.unshift(data.article)
+    //       this.dialogFormVisible = false
+    //       this.$notify({
+    //         title: '成功',
+    //         message: '创建成功',
+    //         type: 'success',
+    //         duration: 2000
+    //       })
+    //     }
+    //   })
+    // }
+
+    private rolesOptionstree = {}
 
     private handleUpdate(row: any) {
       this.tempArticleData = Object.assign({}, row)
-      this.tempArticleData.timestamp = +new Date(this.tempArticleData.timestamp)
+      this.tempArticleData.permissionsdata = this.tempArticleData.permissions.map((item) => item.id)
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
+      this.$nextTick(() => {
+        if (this.$refs.tree) {
+          this.$refs.tree.setCheckedKeys(this.tempArticleData.permissionsdata)
+        }
+      })
       this.$nextTick(() => {
         (this.$refs.dataForm as Form).clearValidate()
       })
     }
 
-    private updateData() {
-      (this.$refs.dataForm as Form).validate(async valid => {
-        if (valid) {
-          const tempData = Object.assign({}, this.tempArticleData)
-          tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
-          const { data } = await updateArticle(tempData.id, {
-            article: tempData
-          })
-          const index = this.list.findIndex(v => v.id === data.article.id)
-          this.list.splice(index, 1, data.article)
-          this.dialogFormVisible = false
-          this.$notify({
-            title: '成功',
-            message: '更新成功',
-            type: 'success',
-            duration: 2000
-          })
+    private async updateData() {
+      const tempData = Object.assign({}, this.tempArticleData)
+      tempData.permissionsArrId = this.$refs.tree.getCheckedKeys()
+      const { data } = await updateRole(tempData.id, {
+        article: tempData
+      })
+      const index = this.list.findIndex(v => v.id === data.article.id)
+      this.list.splice(index, 1, data.article)
+      this.$nextTick(() => {
+        if (this.$refs.tree) {
+          this.$refs.tree.setCheckedKeys([])
         }
       })
-    }
-
-    private handleDelete(row: any, index: number) {
+      this.dialogFormVisible = false
       this.$notify({
-        title: 'Success',
-        message: 'Delete Successfully',
+        title: '成功',
+        message: '更新成功',
         type: 'success',
         duration: 2000
       })
-      this.list.splice(index, 1)
     }
 
-    private async handleGetPageviews(pageviews: string) {
-      const { data } = await getPageviews({ pageviews })
-      this.pageviewsData = data.pageviews
-      this.dialogPageviewsVisible = true
+    private async handleDelete(row: any) {
+      await disableById(row.id)
+      row.status = false
+      this.$notify({
+        title: 'Success',
+        message: 'Disable Successfully',
+        type: 'success',
+        duration: 2000
+      })
+    }
+
+    private async handleEnable(row: any) {
+      await enableById(row.id)
+      row.status = true
+      this.$notify({
+        title: 'Success',
+        message: 'Enable Successfully',
+        type: 'success',
+        duration: 2000
+      })
     }
 
     private handleDownload() {
       this.downloadLoading = true
-      const tHeader = ['timestamp', 'title', 'type', 'importance', 'status']
-      const filterVal = ['timestamp', 'title', 'type', 'importance', 'status']
-      const data = formatJson(filterVal, this.list)
+      const tHeader = Object.keys(this.list[0] || {})
+      const data = this.list.map(row => tHeader.map(key => row[key] || ''))
       exportJson2Excel(tHeader, data, 'table-list')
       this.downloadLoading = false
+    }
+
+    private resetFilters() {
+      this.listQuery = {
+        page: 1,
+        limit: 20,
+        name: undefined,
+        email: undefined,
+        status: undefined,
+        role: undefined,
+        sort: '+id'
+      }
+      this.getList()
     }
 }
 </script>

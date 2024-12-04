@@ -12,8 +12,8 @@
           :width="'100px'"
           :hoverable="false"
         >
-          <div>Hello</div>
-          {{ user.roles }}
+          <!-- <div>Hello</div>
+          {{ user.roles }} -->
         </pan-thumb>
       </div>
       <div class="box-center">
@@ -21,8 +21,20 @@
           {{ user.name }}
         </div>
         <div class="user-role text-center text-muted">
-          {{ user.roles | uppercaseFirstChar }}
+          {{ user.roles }}
         </div>
+      </div>
+      <div class="box-center">
+         <!-- 修改头像按钮 -->
+         <el-upload
+          class="upload-avatar"
+          action="/api/upload/avatar"
+          :show-file-list="false"
+          :http-request="handleFileUpload"
+          :before-upload="beforeFileUpload"
+        >
+          <el-button size="small" type="primary" style="margin-top: 10px">修改头像</el-button>
+        </el-upload>
       </div>
     </div>
 
@@ -69,15 +81,68 @@
 import { Component, Prop, Vue } from 'vue-property-decorator'
 import { IProfile } from '../index.vue'
 import PanThumb from '@/components/PanThumb/index.vue'
+import { uploadFile } from '@/api/fileUploadDownload'
+import { UserModule } from '@/store/modules/user'
 
-  @Component({
-    name: 'UserCard',
-    components: {
-      PanThumb
-    }
-  })
+@Component({
+  name: 'UserCard',
+  components: {
+    PanThumb
+  }
+})
 export default class extends Vue {
-    @Prop({ required: true }) private user!: IProfile
+  @Prop({ required: true }) private user!: IProfile
+
+  // 自定义请求头（如果需要 Token 等，可以在这里配置）
+  private uploadHeaders = {
+    Authorization: `Bearer ${UserModule.token}`
+  }
+
+  /**
+   * 上传前校验
+   * @param {File} file - 要上传的文件
+   * @returns {boolean} 是否允许上传
+   */
+  private beforeFileUpload(file: File): boolean {
+    const maxSize = 2 * 1024 * 1024 // 2MB
+    if (file.size > maxSize) {
+      this.$message.error('文件大小不能超过 2MB')
+      return false
+    }
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif']
+    if (!allowedTypes.includes(file.type)) {
+      this.$message.error('仅支持 JPEG/PNG/GIF 格式图片')
+      return false
+    }
+    return true
+  }
+
+  /**
+   * 手动处理文件上传
+   * @param {any} options - 包含文件和回调方法
+   */
+  private async handleFileUpload(options: any) {
+    const { file, onSuccess, onError } = options
+    const formData = new FormData()
+    formData.append('file', file)
+
+    try {
+      const { data } = await uploadFile(formData)
+      if (data && data.filePath) {
+        this.user.avatar = data.filePath // 动态更新用户头像
+        UserModule.GetUserInfo()
+        this.$message.success('头像上传成功！')
+        onSuccess(data) // 通知 el-upload 上传成功
+      } else {
+        this.$message.error('上传成功，但返回数据格式错误')
+        onError(new Error('无效的响应数据'))
+      }
+    } catch (error) {
+      this.$message.error('头像上传失败，请重试！')
+      console.error('上传失败:', error)
+      onError(error) // 通知 el-upload 上传失败
+    }
+  }
 }
 </script>
 
@@ -139,4 +204,5 @@ export default class extends Vue {
       }
     }
   }
+
 </style>

@@ -31,6 +31,7 @@
                       class="form-control"
                       v-model="loginForm.username"
                       ref="username"
+                      placeholder="Email"
                     />
                   </div>
                 </el-form-item>
@@ -42,6 +43,7 @@
                     ref="password"
                     @keyup ="checkCapslock"
                     @blur="capsTooltip = false"
+                    placeholder="Password"
                   />
                   <span
                     @click="showPwd"
@@ -99,9 +101,6 @@ import { Route } from 'vue-router'
 import { Dictionary } from 'vue-router/types/router'
 import { Form as ElForm, Input } from 'element-ui'
 import { UserModule } from '@/store/modules/user'
-import { isValidUsername } from '@/utils/validate'
-import LangSelect from '@/components/LangSelect/index.vue'
-import SocialSign from './components/SocialSignin.vue'
 
   @Component({
     name: 'Login'
@@ -143,8 +142,8 @@ export default class extends Vue {
     }
 
     private loginForm = {
-      username: 'Spike@163.com',
-      password: '#Alone117'
+      username: 'admin@system.com',
+      password: 'admin123'
     }
 
     private loginRules = {

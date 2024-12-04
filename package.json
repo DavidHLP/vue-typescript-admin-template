@@ -4,13 +4,12 @@
   "private": true,
   "author": "Chong Guo <armourcy@gmail.com>",
   "scripts": {
-    "serve": "concurrently \"npm:mock\" \"vue-cli-service serve\"",
+    "serve": "vue-cli-service serve",
     "test:unit": "jest --clearCache && vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
     "build:prod": "vue-cli-service build",
     "build:stage": "vue-cli-service build --mode staging",
     "svg": "vsvg -s ./src/icons/svg -t ./src/icons/components --ext ts --es6",
-    "mock": "cd mock && ts-node-dev mock-server.ts",
     "format": "prettier --write ."
   },
   "dependencies": {
@@ -56,7 +55,8 @@
     "vuex": "^3.6.2",
     "vuex-module-decorators": "^1.0.1",
     "xlsx": "^0.16.9",
-    "yamljs": "^0.3.0"
+    "yamljs": "^0.3.0",
+    "yarn": "^1.22.22"
   },
   "devDependencies": {
     "@types/clipboard": "^2.0.1",
