@@ -108,40 +108,6 @@ export const constantRoutes: RouteConfig[] = [
       }
     ]
   },
-  {
-    path: '/usermanage',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        component: () =>
-          import(/* webpackChunkName: "tab" */ '@/views/usermanage/index.vue'),
-        name: 'usermanage',
-        meta: {
-          title: 'usermanage',
-          icon: 'user',
-          roles: ['ADMIN']
-        }
-      }
-    ]
-  },
-  {
-    path: '/rolemanage',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        component: () =>
-          import(/* webpackChunkName: "tab" */ '@/views/rolemanage/index.vue'),
-        name: 'rolemanage',
-        meta: {
-          title: 'rolemanage',
-          icon: 'user',
-          roles: ['ADMIN']
-        }
-      }
-    ]
-  },
   // {
   //   path: '/documentation',
   //   component: Layout,
@@ -266,6 +232,42 @@ export const asyncRoutes: RouteConfig[] = [
   //   ]
   // },
   /** when your routing map is too long, you can split it into small modules **/
+  {
+    path: '/usermanage',
+    component: Layout,
+    meta: { roles: ['MANAGEMENT', 'ADMIN'] },
+    children: [
+      {
+        path: 'index',
+        component: () =>
+          import(/* webpackChunkName: "tab" */ '@/views/usermanage/index.vue'),
+        name: 'usermanage',
+        meta: {
+          title: 'usermanage',
+          icon: 'user',
+          roles: ['MANAGEMENT', 'ADMIN']
+        }
+      }
+    ]
+  },
+  {
+    path: '/rolemanage',
+    component: Layout,
+    meta: { roles: ['ADMIN'] },
+    children: [
+      {
+        path: 'index',
+        component: () =>
+          import(/* webpackChunkName: "tab" */ '@/views/rolemanage/index.vue'),
+        name: 'rolemanage',
+        meta: {
+          title: 'rolemanage',
+          icon: 'user',
+          roles: ['ADMIN']
+        }
+      }
+    ]
+  },
   componentsRouter,
   chartsRouter,
   // nestedRouter,
