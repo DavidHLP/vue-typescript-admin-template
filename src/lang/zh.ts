@@ -63,8 +63,11 @@ export default {
     i18n: '国际化',
     externalLink: '外链',
     profile: '个人中心',
+    user: '用户',
     usermanage: '用户管理',
-    rolemanage: '权限管理'
+    rolemanage: '权限管理',
+    article: '文章',
+    edit: '编辑'
   },
   navbar: {
     logOut: '退出登录',

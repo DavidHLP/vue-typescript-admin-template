@@ -5,7 +5,7 @@ import VueRouter, { RouteConfig } from 'vue-router'
 import Layout from '@/layout/index.vue'
 
 /* Router modules */
-import componentsRouter from './modules/components'
+// import componentsRouter from './modules/components'
 import chartsRouter from './modules/charts'
 import tableRouter from './modules/table'
 // import nestedRouter from './modules/nested'
@@ -41,6 +41,16 @@ Vue.use(VueRouter)
   all roles can be accessed
 */
 export const constantRoutes: RouteConfig[] = [
+  {
+    path: '/home',
+    component: () =>
+      import(/* webpackChunkName: "login" */ '@/views/home/index.vue'),
+    name: 'home',
+    meta: {
+      title: 'home',
+      hidden: true
+    }
+  },
   {
     path: '/redirect',
     component: Layout,
@@ -108,36 +118,6 @@ export const constantRoutes: RouteConfig[] = [
       }
     ]
   },
-  // {
-  //   path: '/documentation',
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       component: () => import(/* webpackChunkName: "documentation" */ '@/views/documentation/index.vue'),
-  //       name: 'Documentation',
-  //       meta: { title: 'documentation', icon: 'documentation', affix: true }
-  //     }
-  //   ]
-  // },
-  // {
-  //   path: '/guide',
-  //   component: Layout,
-  //   redirect: '/guide/index',
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       component: () =>
-  //         import(/* webpackChunkName: "guide" */ '@/views/guide/index.vue'),
-  //       name: 'Guide',
-  //       meta: {
-  //         title: 'guide',
-  //         icon: 'guide',
-  //         noCache: true
-  //       }
-  //     }
-  //   ]
-  // },
   {
     path: '/profile',
     component: Layout,
@@ -157,6 +137,13 @@ export const constantRoutes: RouteConfig[] = [
         }
       }
     ]
+  },
+  {
+    path: '/about',
+    component: () =>
+      import(/* webpackChunkName: "profile" */ '@/views/about/index.vue'),
+    name: 'about',
+    meta: { hidden: true, title: 'about' }
   }
 ]
 
@@ -165,100 +152,56 @@ export const constantRoutes: RouteConfig[] = [
  * the routes that need to be dynamically loaded based on user roles
  */
 export const asyncRoutes: RouteConfig[] = [
-  // {
-  //   path: '/permission',
-  //   component: Layout,
-  //   redirect: '/permission/directive',
-  //   meta: {
-  //     title: 'permission',
-  //     icon: 'lock',
-  //     roles: ['admin', 'editor'], // you can set roles in root nav
-  //     alwaysShow: true // will always show the root menu
-  //   },
-  //   children: [
-  //     {
-  //       path: 'page',
-  //       component: () =>
-  //         import(
-  //           /* webpackChunkName: "permission-page" */ '@/views/permission/page.vue'
-  //         ),
-  //       name: 'PagePermission',
-  //       meta: {
-  //         title: 'pagePermission',
-  //         roles: ['admin'] // or you can only set roles in sub nav
-  //       }
-  //     },
-  //     {
-  //       path: 'directive',
-  //       component: () =>
-  //         import(
-  //           /* webpackChunkName: "permission-directive" */ '@/views/permission/directive.vue'
-  //         ),
-  //       name: 'DirectivePermission',
-  //       meta: {
-  //         title: 'directivePermission'
-  //         // if do not set roles, means: this page does not require permission
-  //       }
-  //     },
-  //     {
-  //       path: 'role',
-  //       component: () =>
-  //         import(
-  //           /* webpackChunkName: "permission-role" */ '@/views/permission/role.vue'
-  //         ),
-  //       name: 'RolePermission',
-  //       meta: {
-  //         title: 'rolePermission',
-  //         roles: ['ADMIN']
-  //       }
-  //     }
-  //   ]
-  // },
-  // {
-  //   path: '/icon',
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       component: () =>
-  //         import(/* webpackChunkName: "icons" */ '@/views/icons/index.vue'),
-  //       name: 'Icons',
-  //       meta: {
-  //         title: 'icons',
-  //         icon: 'icon',
-  //         noCache: true
-  //       }
-  //     }
-  //   ]
-  // },
   /** when your routing map is too long, you can split it into small modules **/
   {
-    path: '/usermanage',
+    path: '/article',
     component: Layout,
-    meta: { roles: ['MANAGEMENT', 'ADMIN'] },
     children: [
       {
         path: 'index',
         component: () =>
-          import(/* webpackChunkName: "tab" */ '@/views/usermanage/index.vue'),
+          import(/* webpackChunkName: "profile" */ '@/views/article/index.vue'),
+        name: 'article',
+        meta: { icon: 'edit', title: 'article' }
+      },
+      {
+        path: 'edit',
+        component: () =>
+          import(
+            /* webpackChunkName: "example-create" */ '@/views/article/edit.vue'
+          ),
+        name: 'edit',
+        meta: {
+          title: 'edit',
+          icon: 'edit',
+          hidden: true
+        }
+      }
+    ]
+  },
+  {
+    path: '/usermanage',
+    component: Layout,
+    meta: {
+      title: 'user',
+      icon: 'user'
+    },
+    children: [
+      {
+        path: 'user',
+        component: () =>
+          import(/* webpackChunkName: "usermanage" */ '@/views/usermanage/index.vue'),
         name: 'usermanage',
         meta: {
           title: 'usermanage',
           icon: 'user',
           roles: ['MANAGEMENT', 'ADMIN']
         }
-      }
-    ]
-  },
-  {
-    path: '/rolemanage',
-    component: Layout,
-    meta: { roles: ['ADMIN'] },
-    children: [
+      },
       {
-        path: 'index',
+        path: 'role',
         component: () =>
-          import(/* webpackChunkName: "tab" */ '@/views/rolemanage/index.vue'),
+          import(/* webpackChunkName: "rolemanage" */ '@/views/rolemanage/index.vue'),
         name: 'rolemanage',
         meta: {
           title: 'rolemanage',
@@ -268,218 +211,10 @@ export const asyncRoutes: RouteConfig[] = [
       }
     ]
   },
-  componentsRouter,
+  // componentsRouter,
   chartsRouter,
   // nestedRouter,
   tableRouter,
-  {
-    path: '/example',
-    component: Layout,
-    redirect: '/example/list',
-    meta: {
-      title: 'example',
-      icon: 'example'
-    },
-    children: [
-      {
-        path: 'create',
-        component: () =>
-          import(
-            /* webpackChunkName: "example-create" */ '@/views/example/create.vue'
-          ),
-        name: 'CreateArticle',
-        meta: {
-          title: 'createArticle',
-          icon: 'edit',
-          roles: ['ADMIN', 'GUEST', 'MANAGEMENT']
-        }
-      },
-      {
-        path: 'edit/:id(\\d+)',
-        component: () =>
-          import(
-            /* webpackChunkName: "example-edit" */ '@/views/example/edit.vue'
-          ),
-        name: 'EditArticle',
-        meta: {
-          title: 'editArticle',
-          noCache: true,
-          activeMenu: '/example/list',
-          hidden: true,
-          roles: ['ADMIN', 'GUEST', 'MANAGEMENT']
-        }
-      },
-      {
-        path: 'list',
-        component: () =>
-          import(
-            /* webpackChunkName: "example-list" */ '@/views/example/list.vue'
-          ),
-        name: 'ArticleList',
-        meta: {
-          title: 'articleList',
-          icon: 'list',
-          roles: ['ADMIN', 'GUEST', 'MANAGEMENT']
-        }
-      }
-    ]
-  },
-  {
-    path: '/tab',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        component: () =>
-          import(/* webpackChunkName: "tab" */ '@/views/tab/index.vue'),
-        name: 'Tab',
-        meta: {
-          title: 'tab',
-          icon: 'tab',
-          roles: ['ADMIN', 'GUEST', 'MANAGEMENT']
-        }
-      }
-    ]
-  },
-  // {
-  //   path: '/error',
-  //   component: Layout,
-  //   redirect: 'noredirect',
-  //   meta: {
-  //     title: 'errorPages',
-  //     icon: '404'
-  //   },
-  //   children: [
-  //     {
-  //       path: '401',
-  //       component: () =>
-  //         import(
-  //           /* webpackChunkName: "error-page-401" */ '@/views/error-page/401.vue'
-  //         ),
-  //       name: 'Page401',
-  //       meta: {
-  //         title: 'page401',
-  //         noCache: true
-  //       }
-  //     },
-  //     {
-  //       path: '404',
-  //       component: () =>
-  //         import(
-  //           /* webpackChunkName: "error-page-404" */ '@/views/error-page/404.vue'
-  //         ),
-  //       name: 'Page404',
-  //       meta: {
-  //         title: 'page404',
-  //         noCache: true
-  //       }
-  //     }
-  //   ]
-  // },
-  // {
-  //   path: '/error-log',
-  //   component: Layout,
-  //   redirect: 'noredirect',
-  //   children: [
-  //     {
-  //       path: 'log',
-  //       component: () =>
-  //         import(
-  //           /* webpackChunkName: "error-log" */ '@/views/error-log/index.vue'
-  //         ),
-  //       name: 'ErrorLog',
-  //       meta: {
-  //         title: 'errorLog',
-  //         icon: 'bug'
-  //       }
-  //     }
-  //   ]
-  // },
-  {
-    path: '/excel',
-    component: Layout,
-    redirect: '/excel/export-excel',
-    meta: {
-      title: 'excel',
-      icon: 'excel',
-      roles: ['ADMIN', 'GUEST', 'MANAGEMENT']
-    },
-    children: [
-      {
-        path: 'export-excel',
-        component: () =>
-          import(
-            /* webpackChunkName: "export-excel" */ '@/views/excel/export-excel.vue'
-          ),
-        name: 'ExportExcel',
-        meta: { title: 'exportExcel', roles: ['ADMIN', 'GUEST', 'MANAGEMENT'] }
-      },
-      {
-        path: 'export-selected-excel',
-        component: () =>
-          import(
-            /* webpackChunkName: "select-excel" */ '@/views/excel/select-excel.vue'
-          ),
-        name: 'SelectExcel',
-        meta: { title: 'selectExcel', roles: ['ADMIN', 'GUEST', 'MANAGEMENT'] }
-      },
-      {
-        path: 'export-merge-header',
-        component: () =>
-          import(
-            /* webpackChunkName: "merge-header" */ '@/views/excel/merge-header.vue'
-          ),
-        name: 'MergeHeader',
-        meta: { title: 'mergeHeader', roles: ['ADMIN', 'GUEST', 'MANAGEMENT'] }
-      },
-      {
-        path: 'upload-excel',
-        component: () =>
-          import(
-            /* webpackChunkName: "upload-excel" */ '@/views/excel/upload-excel.vue'
-          ),
-        name: 'UploadExcel',
-        meta: { title: 'uploadExcel', roles: ['ADMIN', 'GUEST', 'MANAGEMENT'] }
-      }
-    ]
-  },
-  {
-    path: '/zip',
-    component: Layout,
-    redirect: '/zip/download',
-    meta: {
-      title: 'zip',
-      icon: 'zip',
-      alwaysShow: true, // will always show the root menu
-      roles: ['ADMIN', 'GUEST', 'MANAGEMENT']
-    },
-    children: [
-      {
-        path: 'download',
-        component: () =>
-          import(/* webpackChunkName: "zip" */ '@/views/zip/index.vue'),
-        name: 'ExportZip',
-        meta: { title: 'exportZip', roles: ['ADMIN', 'GUEST', 'MANAGEMENT'] }
-      }
-    ]
-  },
-  // {
-  //   path: '/pdf',
-  //   component: Layout,
-  //   redirect: '/pdf/index',
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       component: () =>
-  //         import(/* webpackChunkName: "pdf" */ '@/views/pdf/index.vue'),
-  //       name: 'PDF',
-  //       meta: {
-  //         title: 'pdf',
-  //         icon: 'pdf'
-  //       }
-  //     }
-  //   ]
-  // },
   {
     path: '/pdf-download-example',
     component: () =>
@@ -487,69 +222,6 @@ export const asyncRoutes: RouteConfig[] = [
         /* webpackChunkName: "pdf-download-example" */ '@/views/pdf/download.vue'
       ),
     meta: { hidden: true, roles: ['ADMIN', 'GUEST', 'MANAGEMENT'] }
-  },
-  // {
-  //   path: '/theme',
-  //   component: Layout,
-  //   redirect: 'noredirect',
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       component: () =>
-  //         import(/* webpackChunkName: "theme" */ '@/views/theme/index.vue'),
-  //       name: 'Theme',
-  //       meta: {
-  //         title: 'theme',
-  //         icon: 'theme'
-  //       }
-  //     }
-  //   ]
-  // },
-  {
-    path: '/clipboard',
-    component: Layout,
-    redirect: 'noredirect',
-    children: [
-      {
-        path: 'index',
-        component: () =>
-          import(
-            /* webpackChunkName: "clipboard" */ '@/views/clipboard/index.vue'
-          ),
-        name: 'Clipboard',
-        meta: {
-          title: 'clipboard',
-          icon: 'clipboard',
-          roles: ['ADMIN', 'GUEST', 'MANAGEMENT']
-        }
-      }
-    ]
-  },
-  // {
-  //   path: '/i18n',
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       component: () =>
-  //         import(
-  //           /* webpackChunkName: "i18n-demo" */ '@/views/i18n-demo/index.vue'
-  //         ),
-  //       name: 'I18n',
-  //       meta: {
-  //         title: 'i18n',
-  //         icon: 'international'
-  //       }
-  //     }
-  //   ]
-  // },
-  {
-    path: 'https://github.com/DavidHLP/vue-typescript-admin-template',
-    meta: {
-      title: 'externalLink',
-      icon: 'link',
-      roles: ['ADMIN', 'GUEST', 'MANAGEMENT']
-    }
   },
   {
     path: '*',

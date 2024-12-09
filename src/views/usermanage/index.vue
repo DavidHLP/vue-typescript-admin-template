@@ -396,7 +396,7 @@ const statusTypeKeyValue = statusTypeOptions.reduce(
 ) as { [key: string]: string }
 
   @Component({
-    name: 'ComplexTable',
+    name: 'usermanage',
     components: {
       Pagination
     },

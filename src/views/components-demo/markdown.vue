@@ -65,6 +65,7 @@
 import { Component, Vue } from 'vue-property-decorator'
 import { AppModule } from '@/store/modules/app'
 import MarkdownEditor from '@/components/MarkdownEditor/index.vue'
+import 'highlight.js/styles/vs.css'
 
 const simpleContent = `
 **This is test**

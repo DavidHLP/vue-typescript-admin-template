@@ -318,7 +318,7 @@ import {
 import { IUserInfo } from '@/api/types'
 import { exportJson2Excel } from '@/utils/excel'
 import Pagination from '@/components/Pagination/index.vue'
-import { get } from 'js-cookie'
+// import { get } from 'js-cookie'
 
 const statusTypeOptions = [
   { key: 'true', displayName: '活跃' },
@@ -356,7 +356,7 @@ const statusTypeKeyValue = statusTypeOptions.reduce(
 ) as { [key: string]: string }
 
   @Component({
-    name: 'ComplexTable',
+    name: 'rolemanage',
     components: {
       Pagination
     },

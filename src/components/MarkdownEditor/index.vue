@@ -1,10 +1,16 @@
 <template>
-  <div :id="id" />
+  <div :id="id"></div>
 </template>
 
 <script lang="ts">
 import 'codemirror/lib/codemirror.css' // Editor's Dependency Style
 import '@toast-ui/editor/dist/toastui-editor.css' // Editor's Style
+import 'prismjs/themes/prism.css'
+import '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight.css'
+import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight-all.js'
+import 'tui-color-picker/dist/tui-color-picker.css'
+import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css'
+import colorSyntax from '@toast-ui/editor-plugin-color-syntax'
 import '@toast-ui/editor/dist/i18n/es-es'
 import '@toast-ui/editor/dist/i18n/it-it'
 import '@toast-ui/editor/dist/i18n/ja-jp'
@@ -82,7 +88,8 @@ export default class extends Vue {
       // eslint-disable-next-line new-cap
       this.markdownEditor = new Editor({
         ...this.editorOptions,
-        el: editorElement
+        el: editorElement,
+        plugins: [colorSyntax, codeSyntaxHighlight]
       })
       this.markdownEditor.insertText(this.initialValue)
     }
@@ -111,5 +118,19 @@ export default class extends Vue {
       }
       return ''
     }
+
+    public setMarkdown(value: string) {
+      if (this.markdownEditor) {
+        this.markdownEditor.setMarkdown(value)
+      }
+    }
+
+    public getMarkdown() {
+      if (this.markdownEditor) {
+        return this.markdownEditor.getMarkdown()
+      }
+      return ''
+    }
 }
 </script>
+<style scoped></style>
