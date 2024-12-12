@@ -1,9 +1,9 @@
 export default {
   minHeight: '200px',
   useCommandShortcut: true,
-  usageStatistics: true,
+  usageStatistics: false,
   hideModeSwitch: false,
-  initialEditType: 'wysiwyg',
+  initialEditType: 'markdown',
   previewStyle: 'vertical',
   toolbarItems: [
     ['heading', 'bold', 'italic', 'strike'],

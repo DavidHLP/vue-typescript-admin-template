@@ -1,34 +1,48 @@
-<!-- <template>
+<template>
   <div class="components-container">
+    <!-- Header -->
     <div class="header-container">
       <div class="header-left">
         <i class="el-icon-menu" style="font-size: 18px;"></i>
         <span class="header-title">文章</span>
       </div>
       <div class="header-right">
-        <el-button type="primary" icon="el-icon-view" @click="handlePreview">预览</el-button>
+        <!-- <el-button type="primary" icon="el-icon-view" @click="handlePreview">预览</el-button> -->
         <el-button type="primary" icon="el-icon-document" @click="handleSave">保存</el-button>
         <el-button type="primary" icon="el-icon-setting" @click="openDialog">设置</el-button>
         <el-button type="primary" icon="el-icon-s-promotion" @click="handlePublish">发布</el-button>
       </div>
     </div>
+
+    <!-- Markdown 编辑器 -->
     <div class="editor-container">
       <markdown-editor
         ref="markdownEditor"
-        :initialValue="content1"
-        :height="'calc(77vh)'"
+        :initialValue="markdownArticle.markdownContent"
+        :height="editorHeight"
       />
     </div>
-    <div v-html="html"></div>
-        <el-dialog title="文章设置" :visible.sync="dialogVisible" width="600px">
+
+    <!-- 文章设置弹窗 -->
+    <el-dialog title="文章设置" :visible.sync="dialogVisible" width="600px">
       <div class="dialog-content">
         <el-divider>常规设置</el-divider>
-        <el-form :model="formData" label-width="100px">
+        <el-form :model="markdownArticle" label-width="100px">
           <el-form-item label="标题">
-            <el-input v-model="formData.title" placeholder="请输入标题" />
+            <el-input v-model="markdownArticle.title" placeholder="请输入标题" />
+          </el-form-item>
+          <el-form-item label="唯一标识">
+            <el-input v-model="markdownArticle.uniqueIdentifier" placeholder="唯一标识" />
           </el-form-item>
           <el-form-item label="作者">
-            <el-input v-model="formData.author" placeholder="请选择作者" />
+            <el-input v-model="markdownArticle.author" placeholder="请填写作者" />
+          </el-form-item>
+          <el-form-item label="简介">
+            <el-input
+              v-model="markdownArticle.abstractContent"
+              placeholder="填写简介"
+              type="textarea"
+            />
           </el-form-item>
         </el-form>
       </div>
@@ -39,86 +53,67 @@
     </el-dialog>
   </div>
 </template>
+
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import MarkdownEditor from '@/components/MarkdownEditor/index.vue'
-const fullcontent = `
-  # Awesome Editor!
-  This editor takes up the full screen dynamically.
-
-  \`\`\`java
-  public static void main(){}
-  \`\`\`
-`
+import { updateArticle, getArticleById } from '@/api/articles'
+import { Article, defaultArticle } from './components/default-options'
 
 @Component({
-  name: 'MarkdownDemo',
+  name: 'edit',
   components: {
     MarkdownEditor
   }
 })
-export default class MarkdownDemo extends Vue {
-  private content1 = fullcontent;
-  private html = '';
-  private markdowndata = '';
-
-  // 弹窗显示状态
+export default class Edit extends Vue {
+  // 数据定义
+  private markdownArticle: Article = defaultArticle;
   private dialogVisible = false;
+  private editorHeight = 'calc(70vh)'; // 编辑器默认高度
+  private id: number | null = null; // 定义 id 为数字类型
 
-  // 表单数据
-  private formData = {
-    title: '未命名文章',
-    author: 'David'
-  };
+  mounted() {
+    if (this.$route.query.currentState === 'edit' && this.$route.query.id) {
+      this.id = this.$route.query.id
+      this.getNowArticle(this.id)
+    }
+  }
 
-  // 打开弹窗
+  private async handleSave() {
+    this.markdownArticle.markdownContent = (this.$refs.markdownEditor as MarkdownEditor).getMarkdown()
+    const { data } = await updateArticle(this.markdownArticle.id, { article: this.markdownArticle })
+    this.markdownArticle = data
+    this.id = this.markdownArticle.id
+    console.log(this.id)
+    sessionStorage.setItem('currentArticleId', this.id.toString());
+    (this.$refs.markdownEditor as MarkdownEditor).setMarkdown(this.markdownArticle.markdownContent)
+  }
+
   private openDialog() {
     this.dialogVisible = true
   }
 
-  // 保存设置
-  private saveSettings() {
-    console.log('保存的设置:', this.formData)
+  private async saveSettings() {
+    await this.handleSave()
     this.dialogVisible = false
   }
 
-  mounted() {
-    // Set initial editor height and listen for window resize
-    this.updateEditorHeight()
-    window.addEventListener('resize', this.updateEditorHeight)
+  private async handlePublish() {
+    this.markdownArticle.status = true
+    await this.handleSave()
   }
 
-  beforeDestroy() {
-    // Clean up event listener
-    window.removeEventListener('resize', this.updateEditorHeight)
-  }
-
-  private updateEditorHeight() {
-    // Dynamically update editor height
-    this.editorHeight = `${window.innerHeight - 60}px` // 减去 Header 高度
-  }
-
-  private handlePreview() {
-    console.log('预览按钮被点击')
-    this.html = (this.$refs.markdownEditor as MarkdownEditor).getHtml()
-  }
-
-  private handleSave() {
-    console.log('保存按钮被点击')
-  }
-
-  private handleSettings() {
-    console.log('设置按钮被点击')
-  }
-
-  private handlePublish() {
-    console.log('发布按钮被点击')
+  private async getNowArticle(id: number) {
+    const { data } = await getArticleById(id)
+    this.markdownArticle = data.article;
+    (this.$refs.markdownEditor as MarkdownEditor).setMarkdown(this.markdownArticle.markdownContent)
   }
 }
 </script>
 
 <style lang="scss" scoped>
-/* 总容器 */
+/* 样式调整，与原代码保持一致 */
 .components-container {
   width: 95%;
   height: 100%;
@@ -126,15 +121,14 @@ export default class MarkdownDemo extends Vue {
   flex-direction: column;
 }
 
-/* Header 样式 */
 .header-container {
   display: flex;
-  justify-content: space-between; /* 左右对齐 */
-  align-items: center; /* 垂直居中 */
+  justify-content: space-between;
+  align-items: center;
   padding: 10px 20px;
   background-color: #ffffff;
   border-bottom: 1px solid #ebeef5;
-  height: 60px; /* 固定高度 */
+  height: 60px;
 }
 
 .header-left {
@@ -157,86 +151,7 @@ export default class MarkdownDemo extends Vue {
   margin-left: 10px;
 }
 
-.header-right .el-button:last-child {
-  background-color: #1e2f5f; /* 深色按钮 */
-  color: white;
-  font-weight: bold;
-}
-
 .dialog-content {
   padding: 10px 0;
-}
-
-.el-form-item__tip {
-  display: block;
-  font-size: 12px;
-  color: #909399;
-  margin-top: 5px;
-}
-
-.dialog-footer {
-  display: flex;
-  justify-content: flex-end;
-}
-</style> -->
-
-<template>
-  <div id="viewer"></div>
-</template>
-
-<script lang="ts">
-import 'prismjs/themes/prism.css'
-import '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight.css'
-import 'codemirror/lib/codemirror.css' // Editor's Dependency Style
-import '@toast-ui/editor/dist/toastui-editor.css' // Editor's Style
-import Viewer from '@toast-ui/editor/dist/toastui-editor-viewer'
-import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight-all.js'
-import { Component, Vue } from 'vue-property-decorator'
-
-@Component({
-  name: 'demo'
-})
-export default class MarkdownDemo extends Vue {
-  // 将 fullcontent 移到类的成员变量
-  const fullcontent = `
-  # Awesome Editor!
-  This editor takes up the full screen dynamically.
-
-  \`\`\`java
-  public static void main(){}
-  \`\`\`
-`
-
-  // 在 mounted 钩子中初始化 Viewer
-  mounted() {
-    const viewer = new Viewer({
-      el: document.querySelector('#viewer'),
-      height: '600px',
-      initialValue: this.fullcontent,
-      plugins: [codeSyntaxHighlight],
-      minHeight: '200px',
-      useCommandShortcut: true,
-      usageStatistics: true,
-      hideModeSwitch: false,
-      initialEditType: 'wysiwyg',
-      previewStyle: 'vertical',
-      toolbarItems: [
-        ['heading', 'bold', 'italic', 'strike'],
-        ['hr', 'quote'],
-        ['ul', 'ol', 'task', 'indent', 'outdent'],
-        ['table', 'image', 'link'],
-        ['code', 'codeblock'],
-        ['scrollSync']
-      ]
-    })
-  }
-}
-</script>
-
-<style scoped>
-/* 样式可以根据需要调整 */
-#viewer {
-  width: 100%;
-  margin-top: 20px;
 }
 </style>

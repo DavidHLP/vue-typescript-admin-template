@@ -42,6 +42,16 @@ Vue.use(VueRouter)
 */
 export const constantRoutes: RouteConfig[] = [
   {
+    path: '/',
+    component: Layout,
+    redirect: '/home',
+    meta: {
+      title: 'home',
+      hidden: true,
+      noCache: true
+    }
+  },
+  {
     path: '/home',
     component: () =>
       import(/* webpackChunkName: "login" */ '@/views/home/index.vue'),
@@ -97,32 +107,32 @@ export const constantRoutes: RouteConfig[] = [
       import(/* webpackChunkName: "401" */ '@/views/error-page/401.vue'),
     meta: { hidden: true }
   },
-  {
-    path: '/',
-    component: Layout,
-    redirect: '/dashboard',
-    children: [
-      {
-        path: 'dashboard',
-        component: () =>
-          import(
-            /* webpackChunkName: "dashboard" */ '@/views/dashboard/index.vue'
-          ),
-        name: 'Dashboard',
-        meta: {
-          title: 'dashboard',
-          icon: 'dashboard',
-          affix: true,
-          roles: ['ADMIN', 'GUEST', 'MANAGEMENT']
-        }
-      }
-    ]
-  },
+  // {
+  //   path: '/',
+  //   component: Layout,
+  //   redirect: '/dashboard',
+  //   children: [
+  //     {
+  //       path: 'dashboard',
+  //       component: () =>
+  //         import(
+  //           /* webpackChunkName: "dashboard" */ '@/views/dashboard/index.vue'
+  //         ),
+  //       name: 'Dashboard',
+  //       meta: {
+  //         title: 'dashboard',
+  //         icon: 'dashboard',
+  //         affix: true,
+  //         roles: ['ADMIN', 'GUEST', 'MANAGEMENT']
+  //       }
+  //     }
+  //   ]
+  // },
   {
     path: '/profile',
     component: Layout,
     redirect: '/profile/index',
-    meta: { hidden: true },
+    // meta: { hidden: true },
     children: [
       {
         path: 'index',
@@ -144,6 +154,13 @@ export const constantRoutes: RouteConfig[] = [
       import(/* webpackChunkName: "profile" */ '@/views/about/index.vue'),
     name: 'about',
     meta: { hidden: true, title: 'about' }
+  },
+  {
+    path: '/show',
+    component: () =>
+      import(/* webpackChunkName: "profile" */ '@/views/article/show.vue'),
+    name: 'show',
+    meta: { hidden: true, title: 'show' }
   }
 ]
 
@@ -162,7 +179,7 @@ export const asyncRoutes: RouteConfig[] = [
         component: () =>
           import(/* webpackChunkName: "profile" */ '@/views/article/index.vue'),
         name: 'article',
-        meta: { icon: 'edit', title: 'article' }
+        meta: { icon: 'edit', title: 'article', noCache: true }
       },
       {
         path: 'edit',
@@ -174,7 +191,8 @@ export const asyncRoutes: RouteConfig[] = [
         meta: {
           title: 'edit',
           icon: 'edit',
-          hidden: true
+          hidden: true,
+          noCache: true
         }
       }
     ]
@@ -245,6 +263,14 @@ const createRouter = () =>
   })
 
 const router = createRouter()
+
+router.beforeEach((to, from, next) => {
+  if (from.name === 'edit') {
+    console.log('Leaving edit page, clearing sessionStorage.currentArticleId')
+    sessionStorage.removeItem('currentArticleId')
+  }
+  next()
+})
 
 // Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
 export function resetRouter() {

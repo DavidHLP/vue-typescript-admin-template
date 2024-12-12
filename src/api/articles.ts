@@ -27,7 +27,7 @@ export const getArticles = (params: any) =>
     params
   })
 
-export const getArticle = (id: number, params: any) =>
+export const getUserArticle = (id: number, params: any) =>
   request({
     url: `/articles/${id}`,
     method: 'get',
@@ -41,7 +41,7 @@ export const createArticle = (data: any) =>
     data
   })
 
-export const updateArticle = (id: number, data: any) =>
+export const updateUserArticle = (id: number, data: any) =>
   request({
     url: `/articles/${id}`,
     method: 'put',
@@ -59,4 +59,35 @@ export const getPageviews = (params: any) =>
     url: '/pageviews',
     method: 'get',
     params
+  })
+
+export const updateArticle = (id: number, data: any) =>
+  request({
+    url: `/article/updateArticle?id=${id}`,
+    method: 'put',
+    data
+  })
+
+export const getArticleById = (id: number) =>
+  request({
+    url: `/article/getArticle?id=${id}`,
+    method: 'get'
+  })
+
+export const getArticleByStatusAndKeyWord = (status: boolean, keyWord: string) =>
+  request({
+    url: '/article/getArticleByStatusAndKeyWord',
+    method: 'get',
+    params: {
+      status,
+      keyWord
+    }
+  })
+export const deleteArticleById = (id:number) =>
+  request({
+    url: '/article/deleteArticleById',
+    method: 'delete',
+    params: {
+      id
+    }
   })

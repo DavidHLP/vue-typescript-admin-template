@@ -100,25 +100,6 @@ export default class extends Vue {
       this.markdownEditor = undefined
     }
 
-    public focus() {
-      if (this.markdownEditor) {
-        this.markdownEditor.focus()
-      }
-    }
-
-    public setHtml(value: string) {
-      if (this.markdownEditor) {
-        this.markdownEditor.setHtml(value)
-      }
-    }
-
-    public getHtml() {
-      if (this.markdownEditor) {
-        return this.markdownEditor.getHtml()
-      }
-      return ''
-    }
-
     public setMarkdown(value: string) {
       if (this.markdownEditor) {
         this.markdownEditor.setMarkdown(value)

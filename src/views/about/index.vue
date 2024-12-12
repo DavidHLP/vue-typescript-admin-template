@@ -1,10 +1,10 @@
 <template>
   <el-container>
       <!-- Header -->
-      <el-header>
-        <el-row type="flex" justify="space-between" align="middle">
-          <div class="logo">Blog</div>
-          <el-menu :default-active="activeMenu" class="menu" mode="horizontal">
+      <el-header class="header">
+        <el-row type="flex" justify="space-between" align="middle" class="custom-header">
+          <div class="logo">David Blog</div>
+          <el-menu :default-active="activeMenu" class="custom-menu" mode="horizontal">
             <el-menu-item index="1" @click="pushtohome">首页</el-menu-item>
             <el-menu-item index="2" @click="pushtoabout">关于我</el-menu-item>
             <el-menu-item index="3" @click="pushtoprofile">控制台</el-menu-item>
@@ -15,26 +15,24 @@
     <div class="about">
       <el-card class="box-card">
         <div slot="header" class="clearfix">
-          <span>About Page</span>
+          <span>关于页面</span>
         </div>
 
         <el-row>
           <el-col :span="24">
             <p>
-              Welcome to the About Page! This page is built with Vue 3, TypeScript, and Element Plus. Below is an example of a table displaying some static data.
+              欢迎访问关于页面！此项目由 David 开发，使用 Vue 2、TypeScript 和 Element UI 构建。
+              David 是一位全栈基础开发工程师，对用户界面设计和性能优化充满热情。
             </p>
           </el-col>
         </el-row>
 
         <el-table :data="tableData" style="width: 100%; margin-top: 20px">
-          <el-table-column prop="id" label="ID" width="50" />
-          <el-table-column prop="name" label="Name" />
-          <el-table-column prop="role" label="Role" />
+          <el-table-column prop="id" label="编号" width="50" />
+          <el-table-column prop="name" label="姓名" />
+          <el-table-column prop="role" label="角色" />
         </el-table>
 
-        <div style="margin-top: 20px; text-align: right">
-          <el-button type="primary" @click="handleClick">Click Me</el-button>
-        </div>
       </el-card>
     </div>
   </el-container>
@@ -51,15 +49,9 @@ export default class About extends Vue {
     private activeMenu = '2'
     // Table data
     private tableData = [
-      { id: 1, name: 'Alice', role: 'Developer' },
-      { id: 2, name: 'Bob', role: 'Designer' },
-      { id: 3, name: 'Charlie', role: 'Manager' }
+      { id: 1, name: 'David', role: 'Developer' },
+      { id: 2, name: 'Spike', role: 'Designer' }
     ];
-
-    // Button click handler
-    private handleClick(): void {
-      alert('Button clicked!')
-    }
 
     private pushtoprofile() {
       router.push('/profile/index')
